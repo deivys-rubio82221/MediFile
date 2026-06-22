@@ -1,9 +1,9 @@
 {
-  "id": "/medifile/",
+  "id": "/MediFile/",
   "name": "MediFile — Papelería Médica",
   "short_name": "MediFile",
   "description": "Organiza, fotografía y clasifica automáticamente tu papelería médica usando inteligencia artificial. 100% privado: tus documentos nunca salen de tu dispositivo salvo que actives una copia de seguridad en la nube.",
-  "start_url": "/MediFile/?source=pwa",
+  "start_url": "/MediFile/",
   "scope": "/MediFile/",
   "display": "standalone",
   "display_override": ["window-controls-overlay", "standalone"],
@@ -25,31 +25,26 @@
     { "src": "icons/icon-maskable-192.png", "sizes": "192x192", "type": "image/png", "purpose": "maskable" },
     { "src": "icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
-  "screenshots": [
-    { "src": "icons/screenshot-home.png",   "sizes": "1080x2340", "type": "image/png", "form_factor": "narrow",  "label": "Pantalla principal con carpetas y documentos recientes" },
-    { "src": "icons/screenshot-camera.png", "sizes": "1080x2340", "type": "image/png", "form_factor": "narrow",  "label": "Captura de documentos con clasificación por IA" },
-    { "src": "icons/screenshot-desktop.png","sizes": "1920x1080", "type": "image/png", "form_factor": "wide",    "label": "Vista de escritorio" }
-  ],
   "shortcuts": [
     {
       "name": "Tomar foto a un documento",
       "short_name": "Capturar",
       "description": "Abre directamente la cámara para fotografiar un nuevo documento médico",
-      "url": "/?action=camera",
+      "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Buscar documentos",
       "short_name": "Buscar",
       "description": "Busca en tus documentos guardados por nombre, tipo o texto",
-      "url": "/?action=search",
+      "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Perfil médico de emergencia",
       "short_name": "Emergencia",
       "description": "Accede rápido a tu información médica vital",
-      "url": "/?action=medical",
+      "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
   ],
