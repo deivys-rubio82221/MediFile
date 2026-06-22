@@ -7,11 +7,16 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="theme-color" content="#185FA5">
+  <!-- ✅ NUEVO: señales de confianza para Google Safe Browsing -->
+  <meta name="description" content="Organiza tu papelería médica personal. App 100% local, sin servidores externos. Tu información nunca sale de tu dispositivo.">
+  <meta name="robots" content="index, follow">
+  <!-- Reemplaza el valor de content con tu código real de Google Search Console -->
+  <!-- <meta name="google-site-verification" content="TU_CODIGO_AQUI"> -->
   <link rel="manifest" href="manifest.json">
   <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
   <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
   <meta name="apple-mobile-web-app-title" content="MediFile">
-  <title>MediFile</title>
+  <title>MediFile — Papelería Médica Personal</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
   <style>
 :root{
@@ -393,6 +398,17 @@ textarea.finput{resize:vertical;min-height:72px;line-height:1.5}
 .bc-status-dot.ok{background:var(--ok)}.bc-status-dot.warn{background:var(--warn)}.bc-status-dot.none{background:var(--th)}
 .cloud-config-note{margin:0 16px 10px;font-size:12px;color:var(--ts);background:var(--bgs);border-radius:var(--r1);padding:10px 12px;line-height:1.6}
 .backup-sec-title{padding:14px 16px 6px;font-size:11px;font-weight:700;color:var(--th);text-transform:uppercase;letter-spacing:.06em}
+
+/* ── INSTALL BANNER ── */
+#install-banner{
+  position:fixed;left:12px;right:12px;
+  bottom:calc(var(--nav,62px) + 16px);
+  z-index:490;background:var(--p);color:#fff;
+  border-radius:14px;padding:13px 14px;
+  display:flex;align-items:center;gap:10px;
+  box-shadow:0 8px 24px rgba(0,0,0,.35);
+  font-size:13px;animation:sUp .3s ease;
+}
   </style>
 </head>
 <body>
@@ -654,7 +670,6 @@ textarea.finput{resize:vertical;min-height:72px;line-height:1.5}
     <button class="ic" onclick="showEmergencyCard()" title="Ver tarjeta de emergencia" style="color:var(--err)"><i class="ti ti-id-badge"></i></button>
   </div>
   <div class="scroll" style="padding:14px 16px">
-    <!-- Tipo de sangre -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-droplet" style="color:var(--err)"></i>Tipo de sangre</div>
       <div class="blood-type-grid" id="blood-type-grid">
@@ -673,44 +688,33 @@ textarea.finput{resize:vertical;min-height:72px;line-height:1.5}
         <div class="toggle-switch" id="donante-toggle" onclick="toggleDonante()"></div>
       </div>
     </div>
-
-    <!-- Cirugías -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-cut" style="color:var(--err)"></i>Cirugías realizadas</div>
       <div class="surgery-list" id="surgery-list"></div>
       <button class="add-surgery-btn" onclick="addSurgeryField()"><i class="ti ti-plus"></i>Agregar cirugía</button>
     </div>
-
-    <!-- Condiciones médicas -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-alert-triangle" style="color:var(--warn)"></i>Condiciones médicas</div>
       <div class="fgroup" style="margin-bottom:10px"><label>Alergias conocidas</label><textarea id="med-alergias" class="finput" placeholder="Ej: Penicilina, aspirina, látex..."></textarea></div>
       <div class="fgroup" style="margin-bottom:10px"><label>Condiciones crónicas</label><textarea id="med-condiciones" class="finput" placeholder="Ej: Diabetes tipo 2, hipertensión..."></textarea></div>
       <div class="fgroup" style="margin-bottom:0"><label>Medicamentos permanentes</label><textarea id="med-medicamentos" class="finput" placeholder="Ej: Metformina 850mg, Losartán 50mg..."></textarea></div>
     </div>
-
-    <!-- Aseguradora y médico -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-building-hospital" style="color:var(--p)"></i>Atención médica</div>
       <div class="fgroup" style="margin-bottom:10px"><label>EPS / Aseguradora</label><input type="text" id="med-eps" class="finput" placeholder="Ej: Sura, Sanitas, Nueva EPS..."></div>
       <div class="fgroup" style="margin-bottom:10px"><label>Médico de cabecera</label><input type="text" id="med-doctor" class="finput" placeholder="Nombre del médico"></div>
       <div class="fgroup" style="margin-bottom:0"><label>Teléfono del médico</label><input type="tel" id="med-doctor-tel" class="finput" placeholder="+57 300 000 0000"></div>
     </div>
-
-    <!-- Contacto de emergencia -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-phone-call" style="color:var(--ok)"></i>Contacto de emergencia</div>
       <div class="fgroup" style="margin-bottom:10px"><label>Nombre completo</label><input type="text" id="med-c-nombre" class="finput" placeholder="Nombre del contacto"></div>
       <div class="fgroup" style="margin-bottom:10px"><label>Relación</label><input type="text" id="med-c-relacion" class="finput" placeholder="Ej: Esposa, Madre, Hijo..."></div>
       <div class="fgroup" style="margin-bottom:0"><label>Teléfono</label><input type="tel" id="med-c-tel" class="finput" placeholder="+57 300 000 0000"></div>
     </div>
-
-    <!-- Notas adicionales -->
     <div class="med-section">
       <div class="med-section-title"><i class="ti ti-notes" style="color:var(--ts)"></i>Notas adicionales</div>
-      <div class="fgroup" style="margin-bottom:0"><label>Información relevante para emergencias</label><textarea id="med-notas" class="finput" placeholder="Ej: Marcapasos implantado, prótesis de cadera, grupo étnico..."></textarea></div>
+      <div class="fgroup" style="margin-bottom:0"><label>Información relevante para emergencias</label><textarea id="med-notas" class="finput" placeholder="Ej: Marcapasos implantado, prótesis de cadera..."></textarea></div>
     </div>
-
     <button class="btn btn-p" style="margin-bottom:8px" onclick="saveMedProfile()"><i class="ti ti-check"></i>Guardar perfil médico</button>
     <button class="btn btn-s" style="margin-bottom:24px" onclick="showEmergencyCard()"><i class="ti ti-id-badge"></i>Ver tarjeta de emergencia</button>
   </div>
@@ -881,9 +885,7 @@ textarea.finput{resize:vertical;min-height:72px;line-height:1.5}
 
 <!-- MODAL: TARJETA DE EMERGENCIA -->
 <div class="moverlay" id="m-emergency-card" onclick="if(event.target===this)document.getElementById('m-emergency-card').classList.remove('open')">
-  <div class="ec-card" id="ec-card-content">
-    <!-- generado por JS -->
-  </div>
+  <div class="ec-card" id="ec-card-content"></div>
 </div>
 
 <!-- VISOR FULLSCREEN -->
@@ -977,7 +979,7 @@ const DB={
 };
 
 /* ============================================================
-   CRYPTO — doble hash para login robusto
+   CRYPTO
    ============================================================ */
 async function hashPwd(p){
   try{const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p+'mf2024'));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
@@ -1014,7 +1016,7 @@ function switchTab(id){go(id);document.querySelectorAll('.ntab').forEach(t=>t.cl
 function exitSelModeAndBack(){exitSelMode(false);go('home','back');}
 
 /* ============================================================
-   AUTH — login con doble hash
+   AUTH
    ============================================================ */
 async function doLogin(){
   const email=document.getElementById('l-email').value.trim().toLowerCase();
@@ -1028,7 +1030,6 @@ async function doLogin(){
   if(!u){setErr(err,'Correo o contraseña incorrectos');return}
   loginUser(u);
 }
-
 async function doRegister(){
   const name=document.getElementById('r-name').value.trim();
   const email=document.getElementById('r-email').value.trim().toLowerCase();
@@ -1061,7 +1062,6 @@ function updateUser(upd){const users=DB.users();const i=users.findIndex(u=>u.id=
    ============================================================ */
 function bufToB64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)));}
 function b64ToBuf(b64){try{return Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer;}catch{return new ArrayBuffer(0);}}
-
 async function checkBiometricAvailability(){
   const btn=document.getElementById('bio-login-btn');if(!btn)return;
   try{
@@ -1073,7 +1073,7 @@ async function checkBiometricAvailability(){
 async function setupBiometric(){
   const u=getUser();if(!u)return;
   const isSecure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
-  if(!isSecure){toast('⚠ La biometría requiere HTTPS. Despliega la app en un servidor seguro.');return;}
+  if(!isSecure){toast('⚠ La biometría requiere HTTPS.');return;}
   if(!window.PublicKeyCredential){toast('Tu navegador no soporta biometría');return;}
   try{const ok=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();if(!ok){toast('Sin sensor biométrico disponible');return;}}catch(e){toast('Error: '+e.message);return;}
   try{
@@ -1146,13 +1146,9 @@ function prepMedProfile(){
   const mp=DB.medProfile(S.uid);
   _selBloodType=mp.tipoSangre||'';_donante=!!mp.donante;
   _surgeries=[...((mp.cirugias)||[])];
-  // Tipo de sangre UI
   document.querySelectorAll('.btype-btn').forEach(b=>{b.classList.toggle('selected',b.dataset.bt===_selBloodType);});
-  // Toggle donante
   document.getElementById('donante-toggle').classList.toggle('on',_donante);
-  // Cirugías
   renderSurgeries();
-  // Rellenar campos
   document.getElementById('med-alergias').value=mp.alergias||'';
   document.getElementById('med-condiciones').value=mp.condiciones||'';
   document.getElementById('med-medicamentos').value=mp.medicamentos||'';
@@ -1184,7 +1180,6 @@ function toggleDonante(){
   document.getElementById('donante-toggle').classList.toggle('on',_donante);
 }
 function saveMedProfile(){
-  // Sincronizar último valor de cada input de cirugía
   document.querySelectorAll('#surgery-list input').forEach((inp,i)=>{if(i<_surgeries.length)_surgeries[i]=inp.value.trim();});
   const cirugiasFiltradas=_surgeries.map(s=>typeof s==='string'?s.trim():'').filter(s=>s);
   const mp={
@@ -1211,8 +1206,7 @@ function showEmergencyCard(){
   const d=u.dob?calcAge(u.dob)+' años':'—';
   const cirugiasList=(mp.cirugias||[]).filter(c=>c.trim());
   const cirugiasHtml=cirugiasList.length>0
-    ?`<div class="ec-row"><i class="ti ti-cut ec-row-icon" style="color:#C62828"></i><div class="ec-row-content"><div class="ec-row-label">🏥 Cirugías previas</div><div class="ec-row-value">${cirugiasList.map(c=>escH(c)).join('<br>')}</div></div></div>`
-    :'';
+    ?`<div class="ec-row"><i class="ti ti-cut ec-row-icon" style="color:#C62828"></i><div class="ec-row-content"><div class="ec-row-label">🏥 Cirugías previas</div><div class="ec-row-value">${cirugiasList.map(c=>escH(c)).join('<br>')}</div></div></div>`:'';
   const row=(icon,color,label,val)=>val?`<div class="ec-row"><i class="ti ${icon} ec-row-icon" style="color:${color}"></i><div class="ec-row-content"><div class="ec-row-label">${label}</div><div class="ec-row-value">${escH(val)}</div></div></div>`:'';
   const rowE=(icon,color,label,val)=>`<div class="ec-row"><i class="ti ${icon} ec-row-icon" style="color:${color}"></i><div class="ec-row-content"><div class="ec-row-label">${label}</div><div class="ec-row-value${val?'':' empty'}">${val?escH(val):'No indicado'}</div></div></div>`;
   document.getElementById('ec-card-content').innerHTML=`
@@ -1223,10 +1217,7 @@ function showEmergencyCard(){
         <div class="ec-name">${escH(u.name)}${d!=='—'?` · ${d}`:''}</div>
         ${mp.eps?`<div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">🏥 ${escH(mp.eps)}</div>`:''}
       </div>
-      <div class="ec-blood">
-        <div class="ec-blood-type">${escH(bt)}</div>
-        <div class="ec-blood-label">Sangre</div>
-      </div>
+      <div class="ec-blood"><div class="ec-blood-type">${escH(bt)}</div><div class="ec-blood-label">Sangre</div></div>
     </div>
     <div class="ec-body">
       ${rowE('ti-alert-triangle','#E65100','⚠ Alergias',mp.alergias)}
@@ -1265,12 +1256,7 @@ async function shareEmergencyCard(){
    ============================================================ */
 function getBackupData(includeImages=true){
   const docs=DB.docs(S.uid);
-  const data={
-    version:'1.5.0',app:'MediFile',exportedAt:new Date().toISOString(),uid:S.uid,
-    user:getUser(),folders:S.folders,docs,reminders:DB.reminders(S.uid),
-    medProfile:DB.medProfile(S.uid),images:{},
-  };
-  // Eliminar datos sensibles de biometría del backup
+  const data={version:'1.5.0',app:'MediFile',exportedAt:new Date().toISOString(),uid:S.uid,user:getUser(),folders:S.folders,docs,reminders:DB.reminders(S.uid),medProfile:DB.medProfile(S.uid),images:{}};
   if(data.user){delete data.user.biometricCredId;data.user.biometricEnabled=false;}
   if(includeImages){docs.forEach(d=>{const img=DB.img(d.id);if(img)data.images[d.id]=img;});}
   return data;
@@ -1295,16 +1281,13 @@ function restoreBackupData(data){
 }
 function exportBackup(includeImages=true){
   const data=getBackupData(includeImages);
-  const json=JSON.stringify(data);
-  const blob=new Blob([json],{type:'application/json'});
+  const blob=new Blob([JSON.stringify(data)],{type:'application/json'});
   const url=URL.createObjectURL(blob);
   const a=document.createElement('a');
   a.href=url;a.download=`medifile-backup-${new Date().toISOString().slice(0,10)}.json`;
   document.body.appendChild(a);a.click();document.body.removeChild(a);
   URL.revokeObjectURL(url);
-  DB.saveLastBackup('local');
-  toast('✓ Copia descargada correctamente');
-  renderBackupScreen();
+  DB.saveLastBackup('local');toast('✓ Copia descargada correctamente');renderBackupScreen();
 }
 function triggerImportBackup(){
   const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';
@@ -1315,11 +1298,8 @@ function triggerImportBackup(){
       reader.onload=ev=>{
         try{
           const data=JSON.parse(ev.target.result);
-          if(restoreBackupData(data)){
-            DB.saveLastBackup('local');
-            toast('✓ Datos restaurados correctamente');
-            go('home');renderBackupScreen();
-          }else toast('Error: archivo de copia inválido');
+          if(restoreBackupData(data)){DB.saveLastBackup('local');toast('✓ Datos restaurados correctamente');go('home');renderBackupScreen();}
+          else toast('Error: archivo de copia inválido');
         }catch{toast('Error al leer el archivo');}
       };
       reader.readAsText(file);
@@ -1330,11 +1310,10 @@ function triggerImportBackup(){
 
 /* ── Firebase ── */
 async function backupToFirebase(){
-  const cfg=DB.cloudConfig('firebase');
-  if(!cfg.url||!cfg.secret){openCloudConfig('firebase');return;}
+  const cfg=DB.cloudConfig('firebase');if(!cfg.url||!cfg.secret){openCloudConfig('firebase');return;}
   const data=getBackupData();
   try{
-    const sov=showCloudSpin(true);
+    showCloudSpin(true);
     const r=await fetch(`${cfg.url.replace(/\/$/,'')}/medifile/${S.uid}.json?auth=${cfg.secret}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
     showCloudSpin(false);
     if(r.ok){DB.saveLastBackup('firebase');toast('✓ Copia guardada en Firebase');renderBackupScreen();}
@@ -1344,7 +1323,7 @@ async function backupToFirebase(){
 async function restoreFromFirebase(){
   const cfg=DB.cloudConfig('firebase');if(!cfg.url||!cfg.secret){openCloudConfig('firebase');return;}
   try{
-    const sov=showCloudSpin(true);
+    showCloudSpin(true);
     const r=await fetch(`${cfg.url.replace(/\/$/,'')}/medifile/${S.uid}.json?auth=${cfg.secret}`);
     showCloudSpin(false);
     const data=await r.json();
@@ -1358,7 +1337,7 @@ async function backupToSupabase(){
   const cfg=DB.cloudConfig('supabase');if(!cfg.url||!cfg.key){openCloudConfig('supabase');return;}
   const data=getBackupData();
   try{
-    const sov=showCloudSpin(true);
+    showCloudSpin(true);
     const r=await fetch(`${cfg.url.replace(/\/$/,'')}/rest/v1/medifile_backups`,{
       method:'POST',
       headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.key,'Prefer':'resolution=merge-duplicates'},
@@ -1366,13 +1345,13 @@ async function backupToSupabase(){
     });
     showCloudSpin(false);
     if(r.ok||r.status===201||r.status===200){DB.saveLastBackup('supabase');toast('✓ Copia guardada en Supabase');renderBackupScreen();}
-    else toast('Error Supabase: '+r.status+' — ¿Tabla creada? Ver instrucciones');
+    else toast('Error Supabase: '+r.status);
   }catch{showCloudSpin(false);toast('Error de conexión con Supabase');}
 }
 async function restoreFromSupabase(){
   const cfg=DB.cloudConfig('supabase');if(!cfg.url||!cfg.key){openCloudConfig('supabase');return;}
   try{
-    const sov=showCloudSpin(true);
+    showCloudSpin(true);
     const r=await fetch(`${cfg.url.replace(/\/$/,'')}/rest/v1/medifile_backups?uid=eq.${S.uid}&select=data&limit=1`,{
       headers:{'apikey':cfg.key,'Authorization':'Bearer '+cfg.key},
     });
@@ -1385,12 +1364,12 @@ async function restoreFromSupabase(){
   }catch{showCloudSpin(false);toast('Error al restaurar desde Supabase');}
 }
 
-/* ── Google Drive (OAuth + REST) ── */
+/* ── Google Drive ── */
 async function backupToGDrive(){
   const cfg=DB.cloudConfig('gdrive');if(!cfg.clientId){openCloudConfig('gdrive');return;}
   try{
     const token=await getGDriveToken(cfg.clientId);if(!token)return;
-    const sov=showCloudSpin(true);
+    showCloudSpin(true);
     const data=getBackupData();const json=JSON.stringify(data);
     const meta=JSON.stringify({name:`medifile-backup-${S.uid}.json`,mimeType:'application/json'});
     const form=new FormData();
@@ -1426,17 +1405,17 @@ async function getGDriveToken(clientId){
 const CLOUD_INFO={
   firebase:{
     title:'🔥 Configurar Firebase',
-    note:'Crea un proyecto en <a href="https://console.firebase.google.com" target="_blank" style="color:var(--p)">Firebase Console</a>, activa Realtime Database y obtén la URL y el secret en Configuración del proyecto → Cuentas de servicio.',
-    fields:[{id:'url',label:'URL de la base de datos',ph:'https://mi-proyecto-default-rtdb.firebaseio.com'},{id:'secret',label:'Secret / Token de autenticación',ph:'Tu secret de Firebase',type:'password'}],
+    note:'Crea un proyecto en <a href="https://console.firebase.google.com" target="_blank" style="color:var(--p)">Firebase Console</a>, activa Realtime Database y obtén la URL y el secret.',
+    fields:[{id:'url',label:'URL de la base de datos',ph:'https://mi-proyecto-default-rtdb.firebaseio.com'},{id:'secret',label:'Secret / Token',ph:'Tu secret de Firebase',type:'password'}],
   },
   supabase:{
     title:'⚡ Configurar Supabase',
-    note:'En tu proyecto Supabase, crea una tabla llamada <code>medifile_backups</code> con columnas: <code>uid text PRIMARY KEY, data text, updated_at timestamptz</code>. Luego copia la URL y la clave anon.',
-    fields:[{id:'url',label:'URL del proyecto',ph:'https://xxxx.supabase.co'},{id:'key',label:'Clave anon (pública)',ph:'eyJh...',type:'password'}],
+    note:'Crea una tabla <code>medifile_backups</code> con columnas: <code>uid text PRIMARY KEY, data text, updated_at timestamptz</code>.',
+    fields:[{id:'url',label:'URL del proyecto',ph:'https://xxxx.supabase.co'},{id:'key',label:'Clave anon',ph:'eyJh...',type:'password'}],
   },
   gdrive:{
     title:'☁ Configurar Google Drive',
-    note:'Crea un proyecto en <a href="https://console.cloud.google.com" target="_blank" style="color:var(--p)">Google Cloud Console</a>, activa la API de Drive, crea credenciales OAuth 2.0 (aplicación web) y agrega el dominio de tu app como origen autorizado.',
+    note:'Crea credenciales OAuth 2.0 en <a href="https://console.cloud.google.com" target="_blank" style="color:var(--p)">Google Cloud Console</a> y agrega el dominio de tu app.',
     fields:[{id:'clientId',label:'Client ID de OAuth 2.0',ph:'123456789-abc.apps.googleusercontent.com'}],
   },
 };
@@ -1458,28 +1437,22 @@ function closeCloudConfig(){document.getElementById('m-cloud-config').classList.
 
 /* ── Render backup screen ── */
 function renderBackupScreen(){
-  if(!document.getElementById('scr-backup').classList.contains('active')&&!S.uid)return;
+  if(!S.uid)return;
   const lLocal=DB.lastBackup('local');const lFB=DB.lastBackup('firebase');const lSB=DB.lastBackup('supabase');const lGD=DB.lastBackup('gdrive');
   const lastAll=[lLocal,lFB,lSB,lGD].filter(Boolean).sort().reverse()[0];
   const cfgFB=DB.cloudConfig('firebase');const cfgSB=DB.cloudConfig('supabase');const cfgGD=DB.cloudConfig('gdrive');
   const fmtDate=iso=>iso?new Date(iso).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'})+' '+new Date(iso).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}):'Nunca';
   document.getElementById('backup-content').innerHTML=`
-    <!-- Estado general -->
     <div class="backup-status">
       <div class="bs-icon" style="background:${lastAll?'var(--okbg)':'var(--bgs)'}"><i class="ti ti-cloud-check" style="color:${lastAll?'var(--ok)':'var(--th)'}"></i></div>
       <div class="bs-text"><div class="bs-label">${lastAll?'Última copia guardada':'Sin copias guardadas'}</div>
         <div class="bs-val">${lastAll?fmtDate(lastAll):'Crea tu primera copia a continuación'}</div></div>
     </div>
-
-    <!-- Local -->
     <div class="backup-sec-title">💾 Respaldo local</div>
     <div class="backup-card">
       <div class="bc-header">
         <div class="bc-icon" style="background:var(--bgs)"><i class="ti ti-file-download" style="color:var(--p)"></i></div>
-        <div>
-          <div class="bc-title">Archivo en este dispositivo</div>
-          <div class="bc-sub">Última copia: ${fmtDate(lLocal)}</div>
-        </div>
+        <div><div class="bc-title">Archivo en este dispositivo</div><div class="bc-sub">Última copia: ${fmtDate(lLocal)}</div></div>
         <div class="bc-status-dot ${lLocal?'ok':'none'}"></div>
       </div>
       <div class="bc-actions">
@@ -1488,16 +1461,11 @@ function renderBackupScreen(){
         <button class="bc-btn bc-btn-s" onclick="triggerImportBackup()"><i class="ti ti-upload"></i>Restaurar</button>
       </div>
     </div>
-
-    <!-- Google Drive -->
     <div class="backup-sec-title">☁ Google Drive</div>
     <div class="backup-card">
       <div class="bc-header">
         <div class="bc-icon" style="background:#e8f0fe"><i class="ti ti-brand-google-drive" style="color:#4285F4"></i></div>
-        <div>
-          <div class="bc-title">Google Drive</div>
-          <div class="bc-sub">${cfgGD.clientId?'Configurado · Última: '+fmtDate(lGD):'Sin configurar'}</div>
-        </div>
+        <div><div class="bc-title">Google Drive</div><div class="bc-sub">${cfgGD.clientId?'Configurado · Última: '+fmtDate(lGD):'Sin configurar'}</div></div>
         <div class="bc-status-dot ${cfgGD.clientId?(lGD?'ok':'warn'):'none'}"></div>
       </div>
       <div class="bc-actions">
@@ -1505,16 +1473,11 @@ function renderBackupScreen(){
         <button class="bc-btn bc-btn-s" onclick="openCloudConfig('gdrive')"><i class="ti ti-settings"></i>Configurar</button>
       </div>
     </div>
-
-    <!-- Firebase -->
     <div class="backup-sec-title">🔥 Firebase</div>
     <div class="backup-card">
       <div class="bc-header">
         <div class="bc-icon" style="background:#fff3e0"><i class="ti ti-flame" style="color:#FF6D00"></i></div>
-        <div>
-          <div class="bc-title">Firebase Realtime Database</div>
-          <div class="bc-sub">${cfgFB.url?'Configurado · Última: '+fmtDate(lFB):'Sin configurar'}</div>
-        </div>
+        <div><div class="bc-title">Firebase Realtime Database</div><div class="bc-sub">${cfgFB.url?'Configurado · Última: '+fmtDate(lFB):'Sin configurar'}</div></div>
         <div class="bc-status-dot ${cfgFB.url?(lFB?'ok':'warn'):'none'}"></div>
       </div>
       <div class="bc-actions">
@@ -1523,16 +1486,11 @@ function renderBackupScreen(){
         <button class="bc-btn bc-btn-s" onclick="openCloudConfig('firebase')"><i class="ti ti-settings"></i>Conf.</button>
       </div>
     </div>
-
-    <!-- Supabase -->
     <div class="backup-sec-title">⚡ Supabase</div>
     <div class="backup-card">
       <div class="bc-header">
         <div class="bc-icon" style="background:#e8f5e9"><i class="ti ti-database" style="color:#3ECF8E"></i></div>
-        <div>
-          <div class="bc-title">Supabase PostgreSQL</div>
-          <div class="bc-sub">${cfgSB.url?'Configurado · Última: '+fmtDate(lSB):'Sin configurar'}</div>
-        </div>
+        <div><div class="bc-title">Supabase PostgreSQL</div><div class="bc-sub">${cfgSB.url?'Configurado · Última: '+fmtDate(lSB):'Sin configurar'}</div></div>
         <div class="bc-status-dot ${cfgSB.url?(lSB?'ok':'warn'):'none'}"></div>
       </div>
       <div class="bc-actions">
@@ -1628,6 +1586,15 @@ function renderProfile(){
     <div class="ssec"><div class="sttl">Recordatorios</div>${reminderHTML}</div>
 
     <div class="ssec"><div class="sttl">App</div>
+      ${_deferredInstall ? `
+      <div class="sitem" onclick="promptInstall()">
+        <i class="ti ti-download" style="color:var(--p)"></i>
+        <div class="sit-text">
+          <div class="sit-label">Instalar en este dispositivo</div>
+          <div class="sit-val">Agrega MediFile a tu pantalla de inicio</div>
+        </div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i>
+      </div>` : ''}
       <div class="sitem" style="cursor:default"><i class="ti ti-info-circle"></i>
         <div class="sit-text"><div class="sit-label">MediFile v1.5.0</div>
           <div class="sit-val">Desarrollado por Deivys Rubio</div></div>
@@ -1641,7 +1608,6 @@ function getLastBackupText(){
   if(!dates.length)return'Sin copias guardadas';
   const dt=new Date(dates[0]);return'Última: '+dt.toLocaleDateString('es-CO',{day:'numeric',month:'short'})+' '+dt.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
 }
-
 function goEditProfile(){
   const u=getUser();if(!u)return;
   document.getElementById('e-name').value=u.name;
@@ -1926,7 +1892,6 @@ function selectAnalysisFolder(fid){
   document.getElementById('pi-ic').innerHTML=`<i class="ti ${f.icon}" style="color:${c.ic}"></i>`;
   document.getElementById('pi-ic').style.background=c.bg;document.getElementById('pi-name').textContent=f.name;closeFsel();
 }
-
 function saveDoc(){
   const a=S.analysis;if(!a)return;
   const fid=a.targetFolderId||S.folders[0]?.id;if(!fid){toast('Selecciona una carpeta');return}
@@ -2082,7 +2047,6 @@ async function shareCurrentDoc(){const{docId}=S.curDoc||{};if(!docId)return;awai
 async function downloadCurrentDoc(){const{docId}=S.curDoc||{};if(!docId)return;await downloadItems([docId]);}
 async function shareSelected(){if(!SEL.items.size){toast('Selecciona al menos un documento');return;}await shareItems([...SEL.items]);}
 async function downloadSelected(){if(!SEL.items.size){toast('Selecciona al menos un documento');return;}await downloadItems([...SEL.items]);}
-
 async function shareItems(ids){
   if(_shareBusy)return;_shareBusy=true;
   try{
@@ -2097,7 +2061,6 @@ async function shareItems(ids){
     try{await navigator.share({title:'MediFile',text:'Documento médico'});}catch(e){if(e.name!=='AbortError')toast('No se pudo compartir');}
   }finally{_shareBusy=false;}
 }
-
 async function downloadItems(ids){
   if(_downloadBusy)return;_downloadBusy=true;
   try{
@@ -2136,11 +2099,71 @@ function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 function sanitizeName(s){return String(s).replace(/[<>:"/\\|?*\x00-\x1f]/g,'').trim().slice(0,80)||'documento';}
 
 /* ============================================================
+   ✅ NUEVO: INSTALACIÓN PWA
+   ============================================================ */
+let _deferredInstall = null;
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  _deferredInstall = e;
+  // Mostrar banner 2 segundos después de que el usuario ya está usando la app
+  if (S.uid) setTimeout(showInstallBanner, 2000);
+  else {
+    // Si aún no inició sesión, esperar al login
+    const origLoginUser = loginUser;
+    window._pendingInstallBanner = true;
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  _deferredInstall = null;
+  document.getElementById('install-banner')?.remove();
+  toast('✓ MediFile instalada en tu dispositivo');
+});
+
+function showInstallBanner() {
+  if (!_deferredInstall || document.getElementById('install-banner')) return;
+  const b = document.createElement('div');
+  b.id = 'install-banner';
+  b.innerHTML = `
+    <i class="ti ti-download" style="font-size:20px;flex-shrink:0"></i>
+    <div style="flex:1">
+      <div style="font-weight:600;font-size:13px">Instalar MediFile</div>
+      <div style="font-size:11px;opacity:.8;margin-top:2px">Acceso rápido desde tu pantalla de inicio</div>
+    </div>
+    <button onclick="promptInstall()"
+      style="background:rgba(255,255,255,.25);color:#fff;border:none;
+             border-radius:8px;padding:7px 12px;font-size:12px;
+             font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">
+      Instalar
+    </button>
+    <button onclick="document.getElementById('install-banner').remove()"
+      style="background:none;color:rgba(255,255,255,.7);border:none;
+             padding:4px 6px;cursor:pointer;font-size:20px;line-height:1;flex-shrink:0">×</button>`;
+  document.body.appendChild(b);
+  // Auto-ocultar después de 10 segundos
+  setTimeout(() => document.getElementById('install-banner')?.remove(), 10000);
+}
+
+async function promptInstall() {
+  document.getElementById('install-banner')?.remove();
+  if (!_deferredInstall) {
+    toast('En Chrome: menú ⋮ → "Agregar a pantalla de inicio"');
+    return;
+  }
+  _deferredInstall.prompt();
+  const { outcome } = await _deferredInstall.userChoice;
+  if (outcome === 'accepted') toast('✓ Instalando MediFile...');
+  _deferredInstall = null;
+}
+
+/* ============================================================
    INIT
    ============================================================ */
 function init(){
   const uid=DB.session();
-  if(uid){const u=DB.users().find(x=>x.id===uid);if(u){S.uid=uid;S.folders=DB.folders(uid);go('home');setTimeout(checkReminders,1500);return;}}
+  if(uid){const u=DB.users().find(x=>x.id===uid);if(u){S.uid=uid;S.folders=DB.folders(uid);go('home');setTimeout(checkReminders,1500);// Mostrar banner de instalación si hay prompt pendiente
+    if(_deferredInstall)setTimeout(showInstallBanner,2500);return;}}
   checkBiometricAvailability();
   setTimeout(()=>{document.getElementById('sd2').classList.add('on');setTimeout(()=>{document.getElementById('sd3').classList.add('on');setTimeout(()=>go('login'),700);},650);},900);
 }
@@ -2151,6 +2174,8 @@ window.go=function(id,...args){
   if(id==='recovery')prepRecovery();
   if(SEL.active&&!['doc','folder','recent','home','search','medprofile','backup'].includes(id))exitSelMode(false);
   _origGo(id,...args);
+  // Mostrar banner de instalación al llegar al home por primera vez
+  if(id==='home'&&_deferredInstall&&S.uid)setTimeout(showInstallBanner,3000);
 };
 
 setInterval(()=>{if(S.uid)checkReminders();},60000);
@@ -2176,7 +2201,7 @@ function showUpdateBanner(){
 }
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('sw.js').then(reg=>{
+  navigator.serviceWorker.register('./sw.js').then(reg=>{
     if(reg.waiting){_swWaiting=reg.waiting;showUpdateBanner();}
     reg.addEventListener('updatefound',()=>{
       const newWorker=reg.installing;
@@ -2197,8 +2222,6 @@ if('serviceWorker' in navigator){
     window.location.reload();
   });
 }
-
-
 </script>
 </body>
 </html>
