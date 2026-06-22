@@ -1,0 +1,2204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#185FA5">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png">
+  <meta name="apple-mobile-web-app-title" content="MediFile">
+  <title>MediFile</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.3.0/dist/tabler-icons.min.css">
+  <style>
+:root{
+  --p:#1565C0;--pl:#EBF4FF;--pd:#0D47A1;
+  --bg:#FFFFFF;--bgs:#F4F7FC;--bgt:#E8EEF8;
+  --t:#0A0A0A;--ts:#374151;--th:#8899AA;
+  --b:rgba(21,101,192,0.10);--bm:rgba(21,101,192,0.18);
+  --ok:#1B5E20;--okbg:#E8F5E9;
+  --err:#B71C1C;--errbg:#FFEBEE;
+  --warn:#E65100;--warnbg:#FFF3E0;
+  --r1:8px;--r2:12px;--r3:16px;--r4:24px;
+  --nav:62px;--desk-bg:#060D1A;
+}
+@media(prefers-color-scheme:dark){:root{
+  --p:#42A5F5;--pl:#0A1929;--pd:#90CAF9;
+  --bg:#0A0A0A;--bgs:#111827;--bgt:#1C2740;
+  --t:#F5F5F5;--ts:#9AAFC5;--th:#4A6080;
+  --b:rgba(255,255,255,0.07);--bm:rgba(255,255,255,0.14);
+  --ok:#66BB6A;--okbg:#0A2210;
+  --err:#EF5350;--errbg:#2A0808;
+  --warn:#FFA726;--warnbg:#201000;
+}}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:var(--bg);color:var(--t);overflow:hidden}
+input,button,select,textarea{font-family:inherit}
+button{cursor:pointer;border:none;background:none}
+a{cursor:pointer;color:var(--p)}
+img{display:block}
+#app{position:fixed;inset:0;overflow:hidden;background:var(--bg)}
+#d-shell{display:contents}
+#d-bg,#d-brand{display:none}
+@media(min-width:600px) and (max-width:1024px){
+  html,body{overflow:hidden;background:var(--bgs)}
+  body{display:flex;justify-content:center;align-items:flex-start}
+  #d-bg,#d-brand{display:none!important}
+  #app{position:relative;inset:auto;width:min(720px,100%);height:100vh;border-radius:0;overflow:hidden;box-shadow:0 0 0 .5px var(--b)}
+}
+@media(min-width:1025px){
+  html,body{overflow:auto;background:var(--desk-bg)}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px 24px;gap:64px}
+  #d-shell{display:flex;align-items:center;gap:64px}
+  #d-bg{display:block;position:fixed;inset:0;z-index:-1;background:radial-gradient(ellipse 70% 70% at 20% 50%,#0D47A1 0%,#060D1A 55%),linear-gradient(180deg,#060D1A 0%,#030710 100%)}
+  #d-brand{display:flex;flex-direction:column;gap:24px;max-width:340px;flex-shrink:1}
+  .db-logo{width:64px;height:64px;background:#1565C0;border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:32px;color:#fff}
+  .db-title{font-size:34px;font-weight:800;color:#fff;letter-spacing:-.5px;line-height:1.1}
+  .db-sub{font-size:15px;color:rgba(255,255,255,.55);line-height:1.7}
+  .db-features{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+  .db-feat{display:flex;align-items:center;gap:12px;font-size:14px;color:rgba(255,255,255,.7)}
+  .db-feat-ic{width:36px;height:36px;border-radius:10px;background:rgba(21,101,192,.25);border:1px solid rgba(66,165,245,.2);display:flex;align-items:center;justify-content:center;font-size:18px;color:#42A5F5;flex-shrink:0}
+  .db-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(21,101,192,.15);border:1px solid rgba(66,165,245,.2);color:#90CAF9;font-size:12px;padding:6px 12px;border-radius:20px;margin-top:8px;width:fit-content}
+  #app{position:relative;inset:auto;width:390px;height:844px;max-height:95vh;border-radius:44px;overflow:hidden;box-shadow:0 40px 100px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,0.08);flex-shrink:0}
+  #app::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:110px;height:28px;background:var(--desk-bg);border-radius:0 0 18px 18px;z-index:999}
+  .topbar{border-bottom:1.5px solid var(--b)!important}
+  .btn-p{background:linear-gradient(135deg,#1976D2 0%,#1565C0 100%)}
+  .s-logo,.shutter,.ncam,.av{background:linear-gradient(135deg,#1976D2,#0D47A1)}
+}
+@media(max-width:360px){
+  .auth-title{font-size:22px}.h-stats{gap:6px}.snum{font-size:18px}
+  .arow{flex-direction:column!important}.arow .btn{width:100%!important;flex:none!important}
+}
+@media(hover:hover){
+  .fcrd:hover{background:var(--bgs)!important;border-color:rgba(21,101,192,.2)!important}
+  .sitem:hover{background:var(--bgs)!important}.ditem:hover{background:var(--bgs)!important}
+  .rcard:hover{box-shadow:0 4px 16px rgba(21,101,192,.15);transform:translateY(-1px)}
+  .btn:hover{filter:brightness(1.07)}.ic:hover{background:var(--bgt)!important}
+  .ntab:hover{color:var(--p)!important}.add-folder-btn:hover{background:var(--pl)!important;border-color:var(--p)!important}
+  .camside:hover{background:var(--bgt)!important}.fpill:hover{background:var(--pl)!important}
+  .cdot:hover{transform:scale(1.15)}.shutter:hover{filter:brightness(1.1);transform:scale(1.04)}
+  .mopt:hover{background:var(--bgs)!important}.dv-act-btn:hover{background:var(--bgt)!important}
+  .sbtn:hover{filter:brightness(1.07)}.backup-card:hover{border-color:var(--p)!important;background:var(--pl)!important}
+}
+@media(min-width:1025px){
+  .scroll::-webkit-scrollbar{width:3px}.scroll::-webkit-scrollbar-track{background:transparent}
+  .scroll::-webkit-scrollbar-thumb{background:var(--bm);border-radius:3px}
+  .scroll{scrollbar-width:thin;scrollbar-color:var(--bm) transparent}
+}
+
+/* ── SCREENS ── */
+.screen{position:absolute;inset:0;display:flex;flex-direction:column;background:var(--bg);opacity:0;pointer-events:none;transform:translateX(20px);transition:opacity .22s ease,transform .22s ease}
+.screen.active{opacity:1;pointer-events:all;transform:translateX(0)}
+.has-nav{padding-bottom:calc(var(--nav) + env(safe-area-inset-bottom,0px))}
+.scroll{overflow-y:auto;-webkit-overflow-scrolling:touch;flex:1}
+
+.topbar{  padding-top:calc(12px + env(safe-area-inset-top,0px)); }
+#bnav{  height:calc(var(--nav) + env(safe-area-inset-bottom,0px));  padding-bottom:env(safe-area-inset-bottom,0px); }
+.sel-bar{  padding-bottom:calc(12px + env(safe-area-inset-bottom,0px)); }
+.docview-bar{  padding-top:calc(12px + env(safe-area-inset-top,0px)); }
+#scr-splash, .auth-wrap{  padding-top:env(safe-area-inset-top,0px); }
+
+.topbar{
+  display:flex;align-items:center;gap:6px;padding:12px 14px;background:var(--bg);border-bottom:.5px solid var(--b);
+  position:relative;z-index:10;flex-shrink:0;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));
+}
+.tb-title{font-size:17px;font-weight:600;color:var(--t);flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ic{width:38px;height:38px;display:flex;align-items:center;justify-content:center;color:var(--ts);font-size:20px;border-radius:var(--r1);transition:background .15s;flex-shrink:0}
+.ic:active{background:var(--bgt)}.ic-danger{color:var(--err)}.ic.hidden{display:none!important}
+#bnav{
+  position:absolute;bottom:0;left:0;right:0;
+  height:calc(var(--nav) + env(safe-area-inset-bottom,0px));
+  padding-bottom:env(safe-area-inset-bottom,0px);
+  background:var(--bg);border-top:.5px solid var(--b);display:flex;align-items:center;z-index:100
+}
+#bnav.hidden{display:none}
+.ntab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;color:var(--th);font-size:10px;font-weight:500;height:100%;transition:color .15s}
+.ntab i{font-size:22px;transition:transform .15s}.ntab.active{color:var(--p)}.ntab.active i{transform:scale(1.08)}
+.ncam{width:52px;height:52px;background:var(--p);border-radius:50%;display:flex;align-items:center;justify-content:center;color:#fff;font-size:24px;margin-bottom:6px;box-shadow:0 2px 8px rgba(24,95,165,.35);border:3px solid var(--bg);flex-shrink:0}
+
+/* ── FORMS ── */
+.fgroup{display:flex;flex-direction:column;gap:5px;margin-bottom:14px}
+.fgroup label{font-size:13px;font-weight:500;color:var(--ts)}
+.finput{width:100%;padding:12px 14px;background:var(--bgs);border:.5px solid var(--b);border-radius:var(--r2);color:var(--t);font-size:15px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.finput:focus{border-color:var(--p)}.finput::placeholder{color:var(--th)}
+.finput[type=date],.finput[type=datetime-local]{color-scheme:light dark}
+textarea.finput{resize:vertical;min-height:72px;line-height:1.5}
+.prel{position:relative}.prel .finput{padding-right:44px}
+.eye{position:absolute;right:12px;top:50%;transform:translateY(-50%);color:var(--th);font-size:18px;padding:4px}
+.btn{width:100%;padding:14px;border-radius:var(--r2);font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s,transform .1s;cursor:pointer}
+.btn:active{transform:scale(.98);opacity:.88}
+.btn-p{background:var(--p);color:#fff}.btn-s{background:var(--bgs);color:var(--t);border:.5px solid var(--bm)}.btn-d{background:var(--errbg);color:var(--err)}
+.arow{display:flex;gap:10px;width:100%}.arow>.btn{flex:1;width:auto;min-width:0}
+.modal-actions{display:flex;gap:10px}.modal-actions>.btn{flex:1;width:auto;min-width:0;padding:13px 8px}
+.ferr{font-size:12px;color:var(--err);background:var(--errbg);border-radius:var(--r1);padding:8px 12px;display:none}.ferr.show{display:block}
+.flink{text-align:center;font-size:14px;color:var(--ts);margin-top:10px}
+.divrow{display:flex;align-items:center;gap:10px;margin:14px 0}
+.divrow::before,.divrow::after{content:'';flex:1;height:.5px;background:var(--b)}
+.divrow span{font-size:12px;color:var(--th);white-space:nowrap}
+
+/* ── SPLASH ── */
+#scr-splash{align-items:center;justify-content:center;background:linear-gradient(160deg,var(--pl) 0%,var(--bg) 55%);padding-top:env(safe-area-inset-top,0px)}
+.s-logo{width:88px;height:88px;background:var(--p);border-radius:26px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;margin-bottom:22px}
+.s-title{font-size:34px;font-weight:700;color:var(--t);letter-spacing:-.5px}
+.s-sub{font-size:15px;color:var(--ts);margin-top:8px;text-align:center;max-width:260px;line-height:1.5}
+.s-dots{display:flex;gap:7px;margin-top:48px}
+.sdot{width:8px;height:8px;border-radius:50%;background:var(--b);transition:all .35s}.sdot.on{width:22px;border-radius:4px;background:var(--p)}
+
+/* ── AUTH ── */
+.auth-wrap{padding:28px 24px;display:flex;flex-direction:column;padding-top:env(safe-area-inset-top,0px)}
+.auth-icon{font-size:32px;color:var(--p);margin-bottom:20px}
+.auth-title{font-size:26px;font-weight:700;color:var(--t);margin-bottom:4px}
+.auth-sub{font-size:14px;color:var(--ts);margin-bottom:24px}
+.bio-divider{display:flex;align-items:center;gap:10px;margin:16px 0}
+.bio-divider::before,.bio-divider::after{content:'';flex:1;height:.5px;background:var(--b)}
+.bio-divider span{font-size:12px;color:var(--th);white-space:nowrap}
+
+/* ── SEARCH ── */
+.search-topbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg);border-bottom:.5px solid var(--b);position:relative;z-index:10;flex-shrink:0}
+.search-input{flex:1;padding:10px 14px;background:var(--bgs);border:.5px solid var(--bm);border-radius:var(--r2);color:var(--t);font-size:16px;outline:none;transition:border-color .15s;-webkit-appearance:none}
+.search-input:focus{border-color:var(--p)}.search-input::placeholder{color:var(--th)}
+.search-count{padding:7px 16px 4px;font-size:11px;font-weight:600;color:var(--th);background:var(--bgs)}
+
+/* ── HOME ── */
+.h-hero{padding:20px 16px 16px;background:linear-gradient(140deg,var(--pl) 0%,var(--bg) 70%);flex-shrink:0}
+.h-greet{font-size:22px;font-weight:700;color:var(--t)}.h-date{font-size:13px;color:var(--ts);margin-top:3px}
+.h-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:14px}
+.scard{background:var(--bg);border:.5px solid var(--b);border-radius:var(--r2);padding:11px 10px}
+.snum{font-size:22px;font-weight:700;color:var(--p);line-height:1}.slabel{font-size:10px;color:var(--ts);margin-top:3px}
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 6px}
+.sec-title{font-size:14px;font-weight:600;color:var(--t)}.sec-link{font-size:13px;color:var(--p)}
+.rscroll{display:flex;gap:11px;overflow-x:auto;padding:4px 16px 14px;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.rscroll::-webkit-scrollbar{display:none}
+.rcard{flex-shrink:0;width:128px;background:var(--bg);border:.5px solid var(--b);border-radius:var(--r2);overflow:hidden;cursor:pointer}.rcard:active{opacity:.75}
+.rcard-img{width:100%;height:78px;background:var(--bgt);display:flex;align-items:center;justify-content:center;overflow:hidden}
+.rcard-img img{width:100%;height:100%;object-fit:cover}.rcard-img i{font-size:28px;color:var(--th)}
+.rcard-body{padding:8px 9px 10px}
+.rcard-name{font-size:12px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.rcard-meta{font-size:10px;color:var(--th);margin-top:2px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:4px 16px 14px}
+.fcrd{background:var(--bg);border:.5px solid var(--b);border-radius:var(--r3);padding:13px 12px;cursor:pointer;display:flex;flex-direction:column;gap:8px;transition:background .15s}.fcrd:active{background:var(--bgs)}
+.ficon{width:40px;height:40px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:22px}
+.fname{font-size:13px;font-weight:600;color:var(--t)}.fcnt{font-size:11px;color:var(--ts)}
+.add-folder-btn{margin:0 16px 16px;border:.5px dashed var(--bm);border-radius:var(--r2);background:none;color:var(--ts);padding:12px;display:flex;align-items:center;justify-content:center;gap:8px;font-size:14px;width:calc(100% - 32px)}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;padding:48px 24px;text-align:center}
+.empty i{font-size:56px;color:var(--th)}.empty h3{font-size:15px;font-weight:600;color:var(--ts)}.empty p{font-size:13px;color:var(--th)}
+
+/* ── DOC LIST ── */
+.ditem{display:flex;align-items:center;gap:12px;padding:12px 16px;border-bottom:.5px solid var(--b);cursor:pointer;-webkit-user-select:none;user-select:none;transition:background .1s}
+.ditem:active{background:var(--bgs)}.ditem.sel-on{background:var(--pl)!important}
+.dthumb{width:48px;height:56px;border-radius:8px;border:.5px solid var(--b);overflow:hidden;flex-shrink:0;background:var(--bgt);display:flex;align-items:center;justify-content:center}
+.dthumb img{width:100%;height:100%;object-fit:cover}.dthumb i{font-size:22px;color:var(--th)}
+.dinfo{flex:1;min-width:0}
+.dname{font-size:14px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dfolder{font-size:12px;color:var(--ts);margin-top:2px}.ddate{font-size:11px;color:var(--th);margin-top:3px}
+.day-sep{padding:9px 16px 4px;font-size:11px;font-weight:600;color:var(--th);text-transform:capitalize;background:var(--bgs)}
+
+/* ── MULTI SELECT ── */
+.dcheck{width:26px;height:26px;flex-shrink:0;display:none;align-items:center;justify-content:center}.dcheck.show{display:flex}
+.dcheck-ring{width:22px;height:22px;border-radius:50%;border:2px solid var(--bm);background:var(--bg);display:flex;align-items:center;justify-content:center;transition:background .15s,border-color .15s}
+.dcheck-ring.on{background:var(--p);border-color:var(--p)}.dcheck-ring.on i{color:#fff;font-size:11px}
+.sel-bar{
+  position:absolute;bottom:0;left:0;right:0;z-index:150;background:var(--bg);border-top:.5px solid var(--b);
+  padding:12px 14px;
+  padding-bottom:calc(12px + env(safe-area-inset-bottom,0px));
+  display:none;flex-direction:column;gap:10px;box-shadow:0 -4px 24px rgba(0,0,0,.1);animation:sUp .18s ease
+}
+.sel-bar.open{display:flex}.sel-bar-info{font-size:14px;font-weight:600;color:var(--t)}
+.sel-bar-acts{display:flex;gap:8px;flex-wrap:wrap}
+.sbtn{flex:1;min-width:80px;padding:12px 6px;border-radius:var(--r2);border:none;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:600;transition:opacity .15s}
+.sbtn:disabled{opacity:.35;pointer-events:none}.sbtn:active{opacity:.7}
+.sbtn-share{background:var(--p);color:#fff}.sbtn.sbtn-dl{background:var(--bgs);color:var(--t);border:.5px solid var(--bm)}
+.sbtn.sbtn-cancel{background:transparent;color:var(--ts);flex:none;padding:12px 10px;border:.5px solid var(--bm)}
+
+/* ── CÁMARA ── */
+.cam-area{flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+#vid{width:100%;height:100%;object-fit:cover;display:none}
+#cam-ph{display:flex;flex-direction:column;align-items:center;gap:10px;color:rgba(255,255,255,.4);font-size:13px;text-align:center;padding:20px;cursor:pointer}
+#cam-ph i{font-size:56px}
+.cam-frame{position:absolute;inset:24px;border:2px solid rgba(255,255,255,.5);border-radius:12px;pointer-events:none}
+.cam-tip{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-size:12px;color:rgba(255,255,255,.6);pointer-events:none}
+.cam-ctrl{background:var(--bg);padding:14px;display:flex;align-items:center;justify-content:space-around;flex-shrink:0}
+.shutter{width:68px;height:68px;border-radius:50%;background:var(--p);border:3px solid var(--bg);box-shadow:0 0 0 2px var(--p);display:flex;align-items:center;justify-content:center;color:#fff;font-size:28px}
+.camside{width:46px;height:46px;border-radius:50%;background:var(--bgs);border:.5px solid var(--b);display:flex;align-items:center;justify-content:center;font-size:22px;color:var(--ts)}
+.fsel-bar{padding:10px 16px;background:var(--bg);border-top:.5px solid var(--b);flex-shrink:0}
+.fsel-bar label{font-size:12px;color:var(--ts);display:block;margin-bottom:5px}
+.fsel-bar select{width:100%;padding:11px 12px;border-radius:var(--r1);border:.5px solid var(--bm);background:var(--bgs);color:var(--t);font-size:15px;-webkit-appearance:auto}
+
+/* ── ANÁLISIS ── */
+.a-content{padding:14px;display:flex;flex-direction:column;gap:12px}
+.a-preview{width:100%;max-height:min(200px,30vh);object-fit:contain;border-radius:var(--r2);border:.5px solid var(--b);background:var(--bgt)}
+.rcard2{background:var(--bgs);border-radius:var(--r2);padding:13px}
+.rct{font-size:11px;color:var(--ts);text-transform:uppercase;letter-spacing:.06em;font-weight:600;margin-bottom:7px}
+.rmain{font-size:15px;font-weight:600;color:var(--t)}.rsub{font-size:13px;color:var(--ts);margin-top:4px}
+.fpill{display:flex;align-items:center;gap:10px;margin-top:10px;background:var(--bg);border:.5px solid var(--b);border-radius:var(--r1);padding:12px;cursor:pointer;min-height:56px}
+.fpill-ic{width:36px;height:36px;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.conf-bar{height:4px;background:var(--b);border-radius:2px;margin-top:8px;overflow:hidden}
+.conf-fill{height:100%;border-radius:2px;transition:width .6s ease}
+.dtext-pre{font-size:12px;color:var(--ts);font-family:monospace;line-height:1.6;max-height:72px;overflow-y:auto}
+
+/* ── CARPETA / DOCUMENTO ── */
+.f-hero{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:.5px solid var(--b);flex-shrink:0}
+.dv-img-wrap{position:relative;flex-shrink:0}
+.dv-img{width:100%;max-height:min(300px,40vh);object-fit:contain;background:var(--bgt);display:block}
+.dv-expand-btn{position:absolute;bottom:10px;right:10px;width:36px;height:36px;background:rgba(0,0,0,.55);backdrop-filter:blur(4px);border:none;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:18px;cursor:pointer;transition:opacity .15s}.dv-expand-btn:active{opacity:.7}
+.dmeta{padding:14px 16px;display:flex;flex-direction:column;gap:11px}
+.mrow{display:flex;align-items:flex-start;gap:11px;font-size:14px;color:var(--t)}
+.mrow i{font-size:18px;color:var(--ts);flex-shrink:0;margin-top:1px}
+.dextract{font-size:13px;color:var(--ts);line-height:1.7;background:var(--bgs);border-radius:var(--r1);padding:12px}
+.dv-act-row{display:flex;gap:10px;padding:0 16px 20px}
+.dv-act-btn{flex:1;padding:13px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;gap:7px;font-size:14px;font-weight:600;cursor:pointer;border:.5px solid var(--bm);background:var(--bgs);color:var(--t);transition:opacity .15s;font-family:inherit}
+.dv-act-btn:active{opacity:.7}
+
+/* ── PERFIL ── */
+.ph{padding:28px 16px 20px;text-align:center;background:linear-gradient(160deg,var(--pl) 0%,var(--bg) 65%);flex-shrink:0}
+.av{width:72px;height:72px;border-radius:50%;background:var(--p);display:flex;align-items:center;justify-content:center;font-size:26px;font-weight:700;color:#fff;margin:0 auto 12px}
+.pname{font-size:19px;font-weight:700;color:var(--t)}.pemail{font-size:13px;color:var(--ts);margin-top:3px}
+.slist{padding:6px 16px 32px}.ssec{margin-bottom:18px}
+.sttl{font-size:11px;font-weight:600;color:var(--th);text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;padding:0 2px}
+.sitem{display:flex;align-items:center;gap:11px;padding:13px;background:var(--bg);border:.5px solid var(--b);border-radius:var(--r2);margin-bottom:7px;cursor:pointer;transition:background .15s}.sitem:active{background:var(--bgs)}
+.sitem i:first-child{font-size:20px;color:var(--ts);flex-shrink:0}
+.sit-text{flex:1;min-width:0}.sit-label{font-size:14px;font-weight:500;color:var(--t)}
+.sit-val{font-size:12px;color:var(--th);margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+/* ── API ── */
+.api-info{background:var(--pl);border-radius:var(--r2);padding:15px;margin-bottom:22px}
+.api-info-t{font-size:14px;font-weight:600;color:var(--p);margin-bottom:5px}
+.api-info-b{font-size:13px;color:var(--ts);line-height:1.6}
+
+/* ── MODALES ── */
+.moverlay{position:absolute;inset:0;background:rgba(0,0,0,.55);display:none;align-items:flex-end;justify-content:center;z-index:200}
+.moverlay.open{display:flex}
+.msheet{background:var(--bg);border-radius:var(--r3) var(--r3) 0 0;padding:18px 20px 32px;width:100%;max-width:480px;animation:sUp .22s ease;max-height:88vh;overflow-y:auto}
+@keyframes sUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhandle{width:36px;height:4px;background:var(--bm);border-radius:2px;margin:0 auto 16px}
+.mtitle{font-size:17px;font-weight:600;margin-bottom:15px}
+.cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px}
+.cdot{aspect-ratio:1;border-radius:50%;cursor:pointer;border:2.5px solid transparent;transition:transform .15s}.cdot.sel{transform:scale(1.2)}
+.mopt{display:flex;align-items:center;gap:13px;padding:13px 4px;cursor:pointer;border-radius:var(--r1);transition:background .15s}
+.mopt:active{background:var(--bgs)}.mopt.mopt-active{background:var(--pl)}
+.mopt-ic{width:40px;height:40px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+.mopt-text{flex:1}.mopt-label{font-size:15px;font-weight:500;color:var(--t)}.mopt-sub{font-size:12px;color:var(--th);margin-top:2px}
+.mopt.danger .mopt-label{color:var(--err)}.mopt.danger .mopt-ic{background:var(--errbg)}
+.mdivider{height:.5px;background:var(--b);margin:8px 0}
+
+/* ── VISOR FULLSCREEN ── */
+#m-docview{background:rgba(0,0,0,.97)!important;align-items:stretch!important}
+.docview-wrap{width:100%;height:100%;display:flex;flex-direction:column}
+.docview-bar{
+  background:rgba(0,0,0,.8);backdrop-filter:blur(12px);padding:12px 14px;
+  padding-top:calc(12px + env(safe-area-inset-top,0px));
+  display:flex;align-items:center;gap:10px;flex-shrink:0
+}
+.docview-name{color:#fff;font-size:14px;font-weight:600;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.docview-img-wrap{flex:1;overflow:hidden;display:flex;align-items:center;justify-content:center;background:#000;padding:0;position:relative;touch-action:none}
+.docview-img-wrap img{max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;cursor:zoom-in;border-radius:4px;will-change:transform;transform-origin:0 0;user-select:none;-webkit-user-drag:none}
+
+/* ── LOADING ── */
+.sov{position:absolute;inset:0;background:rgba(0,0,0,.6);border-radius:inherit;display:none;flex-direction:column;align-items:center;justify-content:center;gap:12px;z-index:50}.sov.on{display:flex}
+.spin{width:36px;height:36px;border:3px solid rgba(255,255,255,.2);border-top-color:#fff;border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}.spin-t{color:#fff;font-size:14px}
+
+/* ── TOAST ── */
+#toast{position:absolute;bottom:80px;left:50%;transform:translateX(-50%);background:#0A0A0A;color:#fff;padding:10px 22px;border-radius:24px;font-size:13px;display:none;white-space:nowrap;z-index:400;pointer-events:none;border:1px solid rgba(255,255,255,0.1);box-shadow:0 4px 16px rgba(0,0,0,0.4)}
+#toast.on{display:block;animation:tst 3s ease forwards}
+@keyframes tst{0%{opacity:0;transform:translateX(-50%) translateY(6px)}12%{opacity:1;transform:translateX(-50%) translateY(0)}80%{opacity:1}100%{opacity:0}}
+
+/* ── TAGS ── */
+.tag{display:inline-flex;align-items:center;font-size:10px;padding:3px 8px;border-radius:20px;font-weight:500;white-space:nowrap}
+
+/* ── RECOVERY ── */
+.rec-step.hidden{display:none}
+.secq-box{background:var(--bgs);border-radius:var(--r2);padding:14px;margin-bottom:16px;border-left:3px solid var(--p)}
+.secq-label{font-size:11px;color:var(--ts);text-transform:uppercase;font-weight:600;margin-bottom:5px}
+.secq-text{font-size:15px;font-weight:500;color:var(--t)}
+
+/* ── RECORDATORIO ── */
+.reminder-item{display:flex;align-items:center;gap:10px;padding:11px 13px;background:var(--warnbg);border:.5px solid rgba(230,81,0,.2);border-radius:var(--r2);margin-bottom:7px}
+.reminder-item .ri-ic{font-size:18px;color:var(--warn);flex-shrink:0}
+.reminder-item .ri-text{flex:1;min-width:0}
+.reminder-item .ri-name{font-size:13px;font-weight:500;color:var(--t);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reminder-item .ri-date{font-size:11px;color:var(--warn);margin-top:2px}
+.reminder-item .ri-del{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--r1);color:var(--err);font-size:16px;flex-shrink:0;transition:background .15s}
+.reminder-item .ri-del:active{background:var(--errbg)}
+
+/* ── PERFIL MÉDICO ── */
+.blood-type-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:4px}
+.btype-btn{padding:10px 4px;border-radius:var(--r2);font-size:14px;font-weight:600;text-align:center;cursor:pointer;border:2px solid var(--b);background:var(--bgs);color:var(--t);transition:all .15s;line-height:1.3}
+.btype-btn:active{transform:scale(.97)}.btype-btn.selected{border-color:var(--err);background:#FFF0F0;color:var(--err)}
+@media(prefers-color-scheme:dark){.btype-btn.selected{background:#3A0A0A;border-color:#EF5350;color:#EF5350}}
+.med-section{background:var(--bgs);border-radius:var(--r2);padding:14px;margin-bottom:12px}
+.med-section-title{font-size:11px;font-weight:700;color:var(--th);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.med-section-title i{font-size:16px}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:4px 0}
+.toggle-label{font-size:14px;color:var(--t);font-weight:500}
+.toggle-switch{width:44px;height:26px;background:var(--bm);border-radius:13px;position:relative;cursor:pointer;transition:background .2s;flex-shrink:0}
+.toggle-switch.on{background:var(--ok)}
+.toggle-switch::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.toggle-switch.on::after{transform:translateX(18px)}
+
+/* ── CIRUGÍAS ── */
+.surgery-list{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.surgery-item{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--bg);border:.5px solid var(--b);border-radius:var(--r1)}
+.surgery-item input{flex:1;border:none;background:transparent;font-size:14px;color:var(--t);outline:none;font-family:inherit;min-width:0}
+.surgery-item input::placeholder{color:var(--th)}
+.surgery-item button{width:32px;height:32px;display:flex;align-items:center;justify-content:center;border-radius:var(--r1);color:var(--err);font-size:16px;flex-shrink:0;transition:background .15s;border:none;background:none;cursor:pointer}
+.surgery-item button:active{background:var(--errbg)}
+.add-surgery-btn{margin-top:6px;border:.5px dashed var(--bm);border-radius:var(--r1);background:none;color:var(--ts);padding:10px;display:flex;align-items:center;justify-content:center;gap:6px;font-size:13px;width:100%;cursor:pointer}
+.add-surgery-btn:active{background:var(--bgs)}
+
+/* ── TARJETA DE EMERGENCIA ── */
+#m-emergency-card{background:rgba(0,0,0,.85)!important;align-items:center!important;justify-content:center!important}
+.ec-card{background:#fff;border-radius:var(--r3);width:calc(100% - 32px);max-width:380px;overflow:hidden;box-shadow:0 20px 60px rgba(0,0,0,.5);animation:sUp .22s ease;max-height:92vh;overflow-y:auto}
+.ec-header{background:linear-gradient(135deg,#C62828,#B71C1C);padding:16px 18px;display:flex;align-items:center;gap:12px}
+.ec-logo{font-size:28px;color:#fff}
+.ec-header-text{flex:1}
+.ec-header-title{font-size:11px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:.1em;text-transform:uppercase}
+.ec-name{font-size:17px;font-weight:700;color:#fff;margin-top:2px}
+.ec-blood{background:rgba(255,255,255,.15);border-radius:10px;padding:8px 12px;text-align:center;flex-shrink:0}
+.ec-blood-type{font-size:26px;font-weight:900;color:#fff;line-height:1}
+.ec-blood-label{font-size:9px;color:rgba(255,255,255,.7);font-weight:600;letter-spacing:.05em;text-transform:uppercase}
+.ec-body{padding:14px 18px}
+.ec-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:.5px solid #f0f0f0}
+.ec-row:last-child{border-bottom:none}
+.ec-row-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.ec-row-content{flex:1}
+.ec-row-label{font-size:10px;font-weight:700;color:#888;text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.ec-row-value{font-size:14px;color:#111;font-weight:500;line-height:1.4}
+.ec-row-value.empty{color:#aaa;font-style:italic;font-weight:400}
+.ec-footer{background:#f8f8f8;padding:10px 18px;display:flex;align-items:center;justify-content:space-between}
+.ec-footer-brand{font-size:11px;color:#999;font-weight:600}
+.ec-footer-date{font-size:10px;color:#bbb}
+.ec-actions{display:flex;gap:8px;padding:12px 18px}
+.ec-actions>.btn{font-size:14px;padding:12px}
+
+/* ── BACKUP ── */
+.backup-status{margin:14px 16px;background:var(--bgs);border-radius:var(--r2);padding:14px;display:flex;align-items:center;gap:12px}
+.bs-icon{width:40px;height:40px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.bs-text{flex:1}.bs-label{font-size:13px;font-weight:600;color:var(--t)}.bs-val{font-size:12px;color:var(--ts);margin-top:2px}
+.backup-card{margin:0 16px 10px;border:.5px solid var(--b);border-radius:var(--r2);background:var(--bg);overflow:hidden;cursor:pointer;transition:all .15s}
+.backup-card:active{opacity:.8}
+.bc-header{display:flex;align-items:center;gap:12px;padding:13px 14px}
+.bc-icon{width:42px;height:42px;border-radius:var(--r2);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0}
+.bc-title{font-size:14px;font-weight:600;color:var(--t)}.bc-sub{font-size:12px;color:var(--ts);margin-top:2px}
+.bc-actions{padding:0 14px 13px;display:flex;gap:8px}
+.bc-btn{flex:1;padding:10px 6px;border-radius:var(--r1);font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px;cursor:pointer;transition:opacity .15s;border:none;font-family:inherit}
+.bc-btn:active{opacity:.7}
+.bc-btn-p{background:var(--p);color:#fff}.bc-btn-s{background:var(--bgs);color:var(--t);border:.5px solid var(--bm)}
+.bc-btn-d{background:var(--errbg);color:var(--err);border:.5px solid rgba(183,28,28,.2)}
+.bc-status-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.bc-status-dot.ok{background:var(--ok)}.bc-status-dot.warn{background:var(--warn)}.bc-status-dot.none{background:var(--th)}
+.cloud-config-note{margin:0 16px 10px;font-size:12px;color:var(--ts);background:var(--bgs);border-radius:var(--r1);padding:10px 12px;line-height:1.6}
+.backup-sec-title{padding:14px 16px 6px;font-size:11px;font-weight:700;color:var(--th);text-transform:uppercase;letter-spacing:.06em}
+  </style>
+</head>
+<body>
+<div id="d-bg"></div>
+<div id="d-shell">
+
+<div id="d-brand">
+  <div class="db-logo"><i class="ti ti-heart-plus"></i></div>
+  <div class="db-title">MediFile</div>
+  <div class="db-sub">Organiza y accede a toda tu papelería médica desde un solo lugar, con clasificación inteligente usando IA.</div>
+  <div class="db-features">
+    <div class="db-feat"><div class="db-feat-ic"><i class="ti ti-camera"></i></div><span>Toma fotos o carga desde tu galería</span></div>
+    <div class="db-feat"><div class="db-feat-ic"><i class="ti ti-brain"></i></div><span>IA lee y clasifica el documento automáticamente</span></div>
+    <div class="db-feat"><div class="db-feat-ic"><i class="ti ti-heart-rate-monitor"></i></div><span>Perfil médico y tarjeta de emergencia</span></div>
+    <div class="db-feat"><div class="db-feat-ic"><i class="ti ti-cloud-upload"></i></div><span>Copias de seguridad locales y en la nube</span></div>
+  </div>
+  <div class="db-badge"><i class="ti ti-shield-check"></i>Sin servidores externos · 100% local</div>
+</div>
+
+<div id="app">
+
+<!-- SPLASH -->
+<div id="scr-splash" class="screen">
+  <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;flex:1;padding:40px 24px">
+    <div class="s-logo"><i class="ti ti-heart-plus"></i></div>
+    <div class="s-title">MediFile</div>
+    <div class="s-sub">Tu papelería médica, organizada y siempre disponible</div>
+    <div class="s-dots"><div class="sdot on" id="sd1"></div><div class="sdot" id="sd2"></div><div class="sdot" id="sd3"></div></div>
+  </div>
+</div>
+
+<!-- LOGIN -->
+<div id="scr-login" class="screen">
+  <div class="scroll"><div class="auth-wrap">
+    <div class="auth-icon"><i class="ti ti-heart-plus"></i></div>
+    <div class="auth-title">Bienvenido</div>
+    <div class="auth-sub">Inicia sesión para continuar</div>
+    <div class="fgroup"><label>Correo electrónico</label><input type="email" id="l-email" class="finput" placeholder="tu@correo.com" autocomplete="email"></div>
+    <div class="fgroup"><label>Contraseña</label><div class="prel"><input type="password" id="l-pass" class="finput" placeholder="••••••••" autocomplete="current-password"><button class="eye ic" onclick="eyeToggle('l-pass',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="ferr" id="l-err"></div>
+    <button class="btn btn-p" style="margin-top:6px" onclick="doLogin()"><i class="ti ti-login"></i>Ingresar</button>
+    <div class="bio-divider"><span>o continúa con</span></div>
+    <button class="btn btn-s" id="bio-login-btn" style="display:none" onclick="biometricLogin()"><i class="ti ti-fingerprint"></i>Huella / Face ID</button>
+    <div class="flink">¿No tienes cuenta? <a onclick="go('register')">Regístrate</a></div>
+    <div class="flink" style="margin-top:4px"><a onclick="go('recovery')">¿Olvidaste tu contraseña?</a></div>
+  </div></div>
+</div>
+
+<!-- REGISTER -->
+<div id="scr-register" class="screen">
+  <div class="topbar"><button class="ic" onclick="go('login','back')"><i class="ti ti-arrow-left"></i></button><div class="tb-title">Crear cuenta</div></div>
+  <div class="scroll" style="padding:20px 24px">
+    <div class="fgroup"><label>Nombre completo *</label><input type="text" id="r-name" class="finput" placeholder="Tu nombre completo" autocomplete="name"></div>
+    <div class="fgroup"><label>Correo electrónico *</label><input type="email" id="r-email" class="finput" placeholder="tu@correo.com" autocomplete="email"></div>
+    <div class="fgroup"><label>Teléfono (opcional)</label><input type="tel" id="r-phone" class="finput" placeholder="+57 300 000 0000" autocomplete="tel"></div>
+    <div class="fgroup"><label>Contraseña * (mín. 6 caracteres)</label><div class="prel"><input type="password" id="r-pass" class="finput" placeholder="••••••••" autocomplete="new-password"><button class="eye ic" onclick="eyeToggle('r-pass',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="fgroup"><label>Confirmar contraseña *</label><div class="prel"><input type="password" id="r-pass2" class="finput" placeholder="••••••••" autocomplete="new-password"><button class="eye ic" onclick="eyeToggle('r-pass2',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="divrow"><span>Recuperación (opcional)</span></div>
+    <div class="fgroup"><label>Pregunta de seguridad</label>
+      <select id="r-secq" class="finput">
+        <option value="">— Sin pregunta —</option>
+        <option value="mascota">¿Nombre de tu primera mascota?</option>
+        <option value="ciudad">¿Ciudad donde naciste?</option>
+        <option value="madre">¿Nombre de tu madre?</option>
+        <option value="colegio">¿Tu primer colegio?</option>
+        <option value="comida">¿Tu comida favorita?</option>
+      </select>
+    </div>
+    <div class="fgroup"><label>Respuesta</label><input type="text" id="r-seca" class="finput" placeholder="Escribe tu respuesta secreta"></div>
+    <div class="ferr" id="r-err"></div>
+    <button class="btn btn-p" onclick="doRegister()"><i class="ti ti-user-plus"></i>Crear cuenta</button>
+    <div class="flink">¿Ya tienes cuenta? <a onclick="go('login','back')">Inicia sesión</a></div>
+    <div style="height:12px"></div>
+  </div>
+</div>
+
+<!-- RECUPERAR -->
+<div id="scr-recovery" class="screen">
+  <div class="topbar"><button class="ic" onclick="go('login','back')"><i class="ti ti-arrow-left"></i></button><div class="tb-title">Recuperar contraseña</div></div>
+  <div class="scroll" style="padding:24px">
+    <div id="rec-step1" class="rec-step">
+      <p style="font-size:14px;color:var(--ts);line-height:1.6;margin-bottom:20px">Ingresa el correo con el que te registraste.</p>
+      <div class="fgroup"><label>Correo electrónico</label><input type="email" id="rec-email" class="finput" placeholder="tu@correo.com" autocomplete="email"></div>
+      <div class="ferr" id="rec-err1"></div>
+      <button class="btn btn-p" onclick="recStep1()">Continuar</button>
+    </div>
+    <div id="rec-step2" class="rec-step hidden">
+      <div class="secq-box"><div class="secq-label">Pregunta de seguridad</div><div class="secq-text" id="rec-q-text"></div></div>
+      <div class="fgroup"><label>Tu respuesta</label><input type="text" id="rec-answer" class="finput" placeholder="Respuesta exacta (sin mayúsculas)"></div>
+      <div class="fgroup"><label>Nueva contraseña</label><div class="prel"><input type="password" id="rec-pass" class="finput" placeholder="••••••••"><button class="eye ic" onclick="eyeToggle('rec-pass',this)"><i class="ti ti-eye"></i></button></div></div>
+      <div class="fgroup"><label>Confirmar</label><div class="prel"><input type="password" id="rec-pass2" class="finput" placeholder="••••••••"><button class="eye ic" onclick="eyeToggle('rec-pass2',this)"><i class="ti ti-eye"></i></button></div></div>
+      <div class="ferr" id="rec-err2"></div>
+      <button class="btn btn-p" onclick="recStep2()"><i class="ti ti-lock"></i>Cambiar contraseña</button>
+      <button class="btn btn-s" style="margin-top:10px" onclick="recReset()">← Volver</button>
+    </div>
+  </div>
+</div>
+
+<!-- HOME -->
+<div id="scr-home" class="screen has-nav">
+  <div class="topbar">
+    <div class="db-logo" style="width:32px;height:32px;border-radius:10px;font-size:18px;flex-shrink:0"><i class="ti ti-heart-plus"></i></div>
+    <div style="flex:1"><div class="tb-title">MediFile</div></div>
+    <button class="ic" onclick="go('recent')" aria-label="Recientes"><i class="ti ti-clock"></i></button>
+    <button class="ic" onclick="doSearch()" aria-label="Buscar"><i class="ti ti-search"></i></button>
+  </div>
+  <div class="scroll">
+    <div class="h-hero">
+      <div class="h-greet" id="h-greet">Buenos días</div>
+      <div class="h-date" id="h-date"></div>
+      <div class="h-stats">
+        <div class="scard"><div class="snum" id="st-docs">0</div><div class="slabel">documentos</div></div>
+        <div class="scard"><div class="snum" id="st-fold">0</div><div class="slabel">carpetas</div></div>
+        <div class="scard"><div class="snum" id="st-week">0</div><div class="slabel">esta semana</div></div>
+      </div>
+    </div>
+    <div id="home-reminders-sec" style="display:none">
+      <div class="sec-hdr"><div class="sec-title" style="color:var(--warn)">⏰ Recordatorios pendientes</div></div>
+      <div style="padding:0 16px 10px" id="home-reminders-list"></div>
+    </div>
+    <div id="recent-sec">
+      <div class="sec-hdr"><div class="sec-title">Recientes</div><span class="sec-link" onclick="switchTab('recent')">Ver todos</span></div>
+      <div class="rscroll" id="recent-cards"></div>
+    </div>
+    <div class="sec-hdr"><div class="sec-title">Mis carpetas</div></div>
+    <div class="fgrid" id="fgrid"></div>
+    <button class="add-folder-btn" onclick="openFM(null)"><i class="ti ti-folder-plus"></i>Nueva carpeta</button>
+    <div style="height:8px"></div>
+  </div>
+</div>
+
+<!-- BÚSQUEDA -->
+<div id="scr-search" class="screen">
+  <div class="search-topbar">
+    <button class="ic" onclick="go('home','back')"><i class="ti ti-arrow-left"></i></button>
+    <input type="search" id="search-input" class="search-input" placeholder="Buscar documentos..." oninput="liveSearch()" autocomplete="off">
+    <button class="ic" onclick="clearSearch()"><i class="ti ti-x"></i></button>
+  </div>
+  <div class="scroll" id="search-results">
+    <div style="padding:48px 24px;text-align:center;color:var(--th)">
+      <i class="ti ti-search" style="font-size:48px;display:block;margin-bottom:12px;opacity:.4"></i>
+      <div style="font-size:14px">Escribe para buscar en<br>nombres, tipos y texto extraído</div>
+    </div>
+  </div>
+</div>
+
+<!-- RECIENTES -->
+<div id="scr-recent" class="screen has-nav">
+  <div class="topbar">
+    <button class="ic" onclick="go('home','back')"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-title">Documentos recientes</div>
+    <button class="ic" id="sel-toggle-recent" onclick="toggleSelMode('recent')"><i class="ti ti-checkbox"></i></button>
+  </div>
+  <div class="scroll" id="recent-list"></div>
+</div>
+
+<!-- CÁMARA -->
+<div id="scr-camera" class="screen">
+  <div class="topbar"><button class="ic" onclick="stopCam();go('home','back')"><i class="ti ti-x"></i></button><div class="tb-title">Capturar documento</div></div>
+  <div class="cam-area" id="camarea">
+    <video id="vid" autoplay playsinline muted></video>
+    <div id="cam-ph" onclick="startCam()"><i class="ti ti-camera"></i><span>Toca aquí para activar la cámara</span><span style="font-size:11px;color:rgba(255,255,255,.3);margin-top:4px">O usa el botón 📷 para elegir de galería</span></div>
+    <div class="cam-frame"></div>
+    <div class="cam-tip">Encuadra el documento dentro del marco</div>
+  </div>
+  <div class="fsel-bar"><label>Guardar en</label><select id="fsel"></select></div>
+  <div class="cam-ctrl">
+    <button class="camside" onclick="openFM('cam')"><i class="ti ti-folder-plus"></i></button>
+    <button class="shutter" onclick="snap()"><i class="ti ti-camera"></i></button>
+    <button class="camside" onclick="document.getElementById('fi').click()"><i class="ti ti-photo"></i></button>
+  </div>
+  <input type="file" id="fi" accept="image/*" style="display:none" onchange="fileInput(event)">
+  <canvas id="cv" style="display:none"></canvas>
+</div>
+
+<!-- ANÁLISIS -->
+<div id="scr-analysis" class="screen">
+  <div class="topbar"><button class="ic" onclick="discard()"><i class="ti ti-x"></i></button><div class="tb-title">Análisis del documento</div></div>
+  <div class="scroll" style="position:relative" id="a-scroll">
+    <div class="sov" id="a-spin"><div class="spin"></div><div class="spin-t">La IA está leyendo...</div></div>
+    <div class="a-content">
+      <img id="a-img" class="a-preview" alt="Documento capturado">
+      <div class="rcard2">
+        <div class="rct">Tipo de documento</div>
+        <div class="rmain" id="a-type">—</div>
+        <div class="rsub" id="a-sub">Analizando...</div>
+      </div>
+      <div class="rcard2">
+        <div class="rct">Carpeta sugerida — toca para cambiar</div>
+        <div class="fpill" onclick="changeFolderSug()">
+          <div class="fpill-ic" id="pi-ic"></div>
+          <div style="flex:1"><div style="font-size:11px;color:var(--ts)">Guardar en</div><div style="font-size:15px;font-weight:600;color:var(--t)" id="pi-name">—</div></div>
+          <i class="ti ti-chevron-right" style="color:var(--th)"></i>
+        </div>
+        <div style="margin-top:10px">
+          <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--ts);margin-bottom:4px"><span>Confianza</span><span id="conf-v">—</span></div>
+          <div class="conf-bar"><div class="conf-fill" id="conf-f" style="width:0"></div></div>
+        </div>
+      </div>
+      <div class="rcard2"><div class="rct">Texto detectado</div><div class="dtext-pre" id="a-text">—</div></div>
+      <div class="rcard2"><div class="rct">Nombre del archivo</div><input type="text" id="a-dname" class="finput" placeholder="Nombre del documento"></div>
+      <div class="arow">
+        <button class="btn btn-s" onclick="discard()">Descartar</button>
+        <button class="btn btn-p" onclick="saveDoc()"><i class="ti ti-device-floppy"></i>Guardar</button>
+      </div>
+      <div style="height:16px"></div>
+    </div>
+  </div>
+</div>
+
+<!-- CARPETA -->
+<div id="scr-folder" class="screen">
+  <div class="topbar">
+    <button class="ic" onclick="exitSelModeAndBack()"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-title" id="fv-title">Carpeta</div>
+    <button class="ic" id="sel-toggle-folder" onclick="toggleSelMode('folder')"><i class="ti ti-checkbox"></i></button>
+    <button class="ic" id="folder-add-btn" onclick="openFM('cur')"><i class="ti ti-folder-plus"></i></button>
+    <button class="ic" id="folder-cam-btn" onclick="goToCam()"><i class="ti ti-camera"></i></button>
+  </div>
+  <div class="f-hero" id="fv-hero"></div>
+  <div class="scroll" id="fv-list"></div>
+</div>
+
+<!-- DOCUMENTO -->
+<div id="scr-doc" class="screen">
+  <div class="topbar">
+    <button class="ic" onclick="backFromDoc()"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-title" id="dv-title">Documento</div>
+    <button class="ic" onclick="openDocOpts()"><i class="ti ti-dots-vertical"></i></button>
+  </div>
+  <div class="scroll">
+    <div class="dv-img-wrap">
+      <img id="dv-img" class="dv-img" alt="Documento médico">
+      <button class="dv-expand-btn" onclick="expandDoc()"><i class="ti ti-maximize"></i></button>
+    </div>
+    <div class="dmeta">
+      <div class="mrow"><i class="ti ti-folder"></i><span id="dv-folder"></span></div>
+      <div class="mrow"><i class="ti ti-calendar"></i><span id="dv-date"></span></div>
+      <div class="mrow"><i class="ti ti-tag"></i><span id="dv-type"></span></div>
+      <div class="dextract" id="dv-text"></div>
+    </div>
+    <div class="dv-act-row">
+      <button class="dv-act-btn" onclick="shareCurrentDoc()"><i class="ti ti-share"></i>Compartir</button>
+      <button class="dv-act-btn" onclick="downloadCurrentDoc()"><i class="ti ti-download"></i>Descargar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PERFIL -->
+<div id="scr-profile" class="screen has-nav">
+  <div class="scroll"><div class="ph" id="ph-header"></div><div class="slist" id="slist"></div></div>
+</div>
+
+<!-- PERFIL MÉDICO -->
+<div id="scr-medprofile" class="screen">
+  <div class="topbar">
+    <button class="ic" onclick="go('profile','back')"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-title">Mi perfil médico</div>
+    <button class="ic" onclick="showEmergencyCard()" title="Ver tarjeta de emergencia" style="color:var(--err)"><i class="ti ti-id-badge"></i></button>
+  </div>
+  <div class="scroll" style="padding:14px 16px">
+    <!-- Tipo de sangre -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-droplet" style="color:var(--err)"></i>Tipo de sangre</div>
+      <div class="blood-type-grid" id="blood-type-grid">
+        <div class="btype-btn" data-bt="O-" onclick="selectBloodType('O-')">O<br><span style="font-size:11px">neg.</span></div>
+        <div class="btype-btn" data-bt="O+" onclick="selectBloodType('O+')">O<br><span style="font-size:11px">pos.</span></div>
+        <div class="btype-btn" data-bt="A-" onclick="selectBloodType('A-')">A<br><span style="font-size:11px">neg.</span></div>
+        <div class="btype-btn" data-bt="A+" onclick="selectBloodType('A+')">A<br><span style="font-size:11px">pos.</span></div>
+        <div class="btype-btn" data-bt="B-" onclick="selectBloodType('B-')">B<br><span style="font-size:11px">neg.</span></div>
+        <div class="btype-btn" data-bt="B+" onclick="selectBloodType('B+')">B<br><span style="font-size:11px">pos.</span></div>
+        <div class="btype-btn" data-bt="AB-" onclick="selectBloodType('AB-')">AB<br><span style="font-size:11px">neg.</span></div>
+        <div class="btype-btn" data-bt="AB+" onclick="selectBloodType('AB+')">AB<br><span style="font-size:11px">pos.</span></div>
+      </div>
+      <div style="height:10px"></div>
+      <div class="toggle-row">
+        <span class="toggle-label">🫀 Donante de órganos</span>
+        <div class="toggle-switch" id="donante-toggle" onclick="toggleDonante()"></div>
+      </div>
+    </div>
+
+    <!-- Cirugías -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-cut" style="color:var(--err)"></i>Cirugías realizadas</div>
+      <div class="surgery-list" id="surgery-list"></div>
+      <button class="add-surgery-btn" onclick="addSurgeryField()"><i class="ti ti-plus"></i>Agregar cirugía</button>
+    </div>
+
+    <!-- Condiciones médicas -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-alert-triangle" style="color:var(--warn)"></i>Condiciones médicas</div>
+      <div class="fgroup" style="margin-bottom:10px"><label>Alergias conocidas</label><textarea id="med-alergias" class="finput" placeholder="Ej: Penicilina, aspirina, látex..."></textarea></div>
+      <div class="fgroup" style="margin-bottom:10px"><label>Condiciones crónicas</label><textarea id="med-condiciones" class="finput" placeholder="Ej: Diabetes tipo 2, hipertensión..."></textarea></div>
+      <div class="fgroup" style="margin-bottom:0"><label>Medicamentos permanentes</label><textarea id="med-medicamentos" class="finput" placeholder="Ej: Metformina 850mg, Losartán 50mg..."></textarea></div>
+    </div>
+
+    <!-- Aseguradora y médico -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-building-hospital" style="color:var(--p)"></i>Atención médica</div>
+      <div class="fgroup" style="margin-bottom:10px"><label>EPS / Aseguradora</label><input type="text" id="med-eps" class="finput" placeholder="Ej: Sura, Sanitas, Nueva EPS..."></div>
+      <div class="fgroup" style="margin-bottom:10px"><label>Médico de cabecera</label><input type="text" id="med-doctor" class="finput" placeholder="Nombre del médico"></div>
+      <div class="fgroup" style="margin-bottom:0"><label>Teléfono del médico</label><input type="tel" id="med-doctor-tel" class="finput" placeholder="+57 300 000 0000"></div>
+    </div>
+
+    <!-- Contacto de emergencia -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-phone-call" style="color:var(--ok)"></i>Contacto de emergencia</div>
+      <div class="fgroup" style="margin-bottom:10px"><label>Nombre completo</label><input type="text" id="med-c-nombre" class="finput" placeholder="Nombre del contacto"></div>
+      <div class="fgroup" style="margin-bottom:10px"><label>Relación</label><input type="text" id="med-c-relacion" class="finput" placeholder="Ej: Esposa, Madre, Hijo..."></div>
+      <div class="fgroup" style="margin-bottom:0"><label>Teléfono</label><input type="tel" id="med-c-tel" class="finput" placeholder="+57 300 000 0000"></div>
+    </div>
+
+    <!-- Notas adicionales -->
+    <div class="med-section">
+      <div class="med-section-title"><i class="ti ti-notes" style="color:var(--ts)"></i>Notas adicionales</div>
+      <div class="fgroup" style="margin-bottom:0"><label>Información relevante para emergencias</label><textarea id="med-notas" class="finput" placeholder="Ej: Marcapasos implantado, prótesis de cadera, grupo étnico..."></textarea></div>
+    </div>
+
+    <button class="btn btn-p" style="margin-bottom:8px" onclick="saveMedProfile()"><i class="ti ti-check"></i>Guardar perfil médico</button>
+    <button class="btn btn-s" style="margin-bottom:24px" onclick="showEmergencyCard()"><i class="ti ti-id-badge"></i>Ver tarjeta de emergencia</button>
+  </div>
+</div>
+
+<!-- COPIA DE SEGURIDAD -->
+<div id="scr-backup" class="screen">
+  <div class="topbar">
+    <button class="ic" onclick="go('profile','back')"><i class="ti ti-arrow-left"></i></button>
+    <div class="tb-title">Copia de seguridad</div>
+    <button class="ic" onclick="renderBackupScreen()"><i class="ti ti-refresh"></i></button>
+  </div>
+  <div class="scroll" id="backup-content"></div>
+</div>
+
+<!-- EDITAR PERFIL -->
+<div id="scr-pedit" class="screen">
+  <div class="topbar"><button class="ic" onclick="go('profile','back')"><i class="ti ti-arrow-left"></i></button><div class="tb-title">Editar perfil</div></div>
+  <div class="scroll" style="padding:20px 24px">
+    <div class="fgroup"><label>Nombre completo</label><input type="text" id="e-name" class="finput" placeholder="Tu nombre completo"></div>
+    <div class="fgroup"><label>Teléfono</label><input type="tel" id="e-phone" class="finput" placeholder="+57 300 000 0000"></div>
+    <div class="fgroup"><label>Fecha de nacimiento</label><input type="date" id="e-dob" class="finput"></div>
+    <div class="divrow"><span>Cambiar contraseña (opcional)</span></div>
+    <div class="fgroup"><label>Nueva contraseña</label><div class="prel"><input type="password" id="e-pass" class="finput" placeholder="Dejar en blanco para no cambiar"><button class="eye ic" onclick="eyeToggle('e-pass',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="fgroup"><label>Confirmar</label><div class="prel"><input type="password" id="e-pass2" class="finput" placeholder="Repite la nueva contraseña"><button class="eye ic" onclick="eyeToggle('e-pass2',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="divrow"><span>Pregunta de seguridad</span></div>
+    <div class="fgroup"><label>Pregunta</label>
+      <select id="e-secq" class="finput">
+        <option value="">— Sin pregunta —</option>
+        <option value="mascota">¿Nombre de tu primera mascota?</option>
+        <option value="ciudad">¿Ciudad donde naciste?</option>
+        <option value="madre">¿Nombre de tu madre?</option>
+        <option value="colegio">¿Tu primer colegio?</option>
+        <option value="comida">¿Tu comida favorita?</option>
+      </select>
+    </div>
+    <div class="fgroup"><label>Nueva respuesta (dejar en blanco para no cambiar)</label><input type="text" id="e-seca" class="finput" placeholder="Tu respuesta secreta"></div>
+    <div class="ferr" id="e-err"></div>
+    <button class="btn btn-p" onclick="saveProfile()"><i class="ti ti-check"></i>Guardar cambios</button>
+    <div style="height:16px"></div>
+  </div>
+</div>
+
+<!-- API SETUP -->
+<div id="scr-api" class="screen">
+  <div class="topbar"><button class="ic" onclick="go('profile','back')"><i class="ti ti-arrow-left"></i></button><div class="tb-title">Configurar IA (Claude)</div></div>
+  <div class="scroll" style="padding:20px 24px">
+    <div class="api-info">
+      <div class="api-info-t">¿Por qué necesito una clave API?</div>
+      <div class="api-info-b">La clasificación automática usa Claude de Anthropic. Tu clave se guarda <strong>solo en este dispositivo</strong>.</div>
+    </div>
+    <div style="font-size:13px;color:var(--ts);line-height:1.8;margin-bottom:20px">
+      1. Ve a <a href="https://console.anthropic.com" style="color:var(--p)" target="_blank">console.anthropic.com</a><br>
+      2. Crea una cuenta o inicia sesión<br>3. "API Keys" → nueva clave<br>4. Copia y pega aquí abajo
+    </div>
+    <div class="fgroup"><label>Clave API de Anthropic</label><div class="prel"><input type="password" id="api-k" class="finput" placeholder="sk-ant-api03-..."><button class="eye ic" onclick="eyeToggle('api-k',this)"><i class="ti ti-eye"></i></button></div></div>
+    <div class="ferr" id="api-err"></div>
+    <button class="btn btn-p" onclick="saveApiKey()"><i class="ti ti-key"></i>Guardar clave</button>
+    <p style="margin-top:12px;font-size:12px;color:var(--th);text-align:center">Sin clave API, la app clasifica con palabras clave (modo básico)</p>
+    <button id="api-clear-btn" class="btn btn-d" style="margin-top:10px;display:none" onclick="clearApiKey()"><i class="ti ti-trash"></i>Eliminar clave guardada</button>
+  </div>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav id="bnav" class="hidden">
+  <button class="ntab active" id="n-home" onclick="switchTab('home')"><i class="ti ti-home"></i><span>Inicio</span></button>
+  <button class="ntab" id="n-recent" onclick="switchTab('recent')"><i class="ti ti-clock"></i><span>Recientes</span></button>
+  <button onclick="goToCam()" style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;background:none;border:none"><div class="ncam"><i class="ti ti-camera"></i></div></button>
+  <button class="ntab" id="n-profile" onclick="switchTab('profile')"><i class="ti ti-user"></i><span>Perfil</span></button>
+</nav>
+
+<!-- MODAL: NUEVA CARPETA -->
+<div class="moverlay" id="m-folder" onclick="if(event.target===this)closeFM()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">Nueva carpeta</div>
+    <div class="fgroup"><label>Nombre</label><input type="text" id="nf-name" class="finput" placeholder="Ej: Cardiología" maxlength="40"></div>
+    <div style="font-size:12px;color:var(--ts);margin-bottom:8px">Color</div>
+    <div class="cgrid" id="cgrid"></div>
+    <div class="ferr" id="nf-err"></div>
+    <div class="modal-actions">
+      <button class="btn btn-s" onclick="closeFM()">Cancelar</button>
+      <button class="btn btn-p" onclick="createFolder()">Crear carpeta</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIRMAR -->
+<div class="moverlay" id="m-confirm" onclick="if(event.target===this)closeConfirm()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="mc-title">¿Confirmar?</div>
+    <div style="font-size:14px;color:var(--ts);margin-bottom:20px" id="mc-msg"></div>
+    <div class="modal-actions">
+      <button class="btn btn-s" onclick="closeConfirm()">Cancelar</button>
+      <button class="btn btn-d" id="mc-ok">Confirmar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: OPCIONES DOCUMENTO -->
+<div class="moverlay" id="m-docopts" onclick="if(event.target===this)closeDocOpts()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="dv-opts-title">Opciones</div>
+    <div class="mopt" onclick="expandDoc();closeDocOpts()">
+      <div class="mopt-ic" style="background:var(--bgt)"><i class="ti ti-maximize" style="color:var(--ts)"></i></div>
+      <div class="mopt-text"><div class="mopt-label">Ver en pantalla completa</div><div class="mopt-sub">Pellizca para hacer zoom y mover</div></div>
+    </div>
+    <div class="mopt" onclick="openReminderFromDoc();closeDocOpts()">
+      <div class="mopt-ic" style="background:var(--warnbg)"><i class="ti ti-bell" style="color:var(--warn)"></i></div>
+      <div class="mopt-text"><div class="mopt-label">Agregar recordatorio</div><div class="mopt-sub">Notificación en fecha y hora específica</div></div>
+    </div>
+    <div class="mopt" onclick="shareCurrentDoc();closeDocOpts()">
+      <div class="mopt-ic" style="background:var(--pl)"><i class="ti ti-share" style="color:var(--p)"></i></div>
+      <div class="mopt-text"><div class="mopt-label">Compartir</div><div class="mopt-sub">WhatsApp, email, etc.</div></div>
+    </div>
+    <div class="mopt" onclick="downloadCurrentDoc();closeDocOpts()">
+      <div class="mopt-ic" style="background:var(--pl)"><i class="ti ti-download" style="color:var(--p)"></i></div>
+      <div class="mopt-text"><div class="mopt-label">Descargar imagen</div><div class="mopt-sub">Guardar en el dispositivo</div></div>
+    </div>
+    <div class="mdivider"></div>
+    <div class="mopt danger" onclick="closeDocOpts();confirmDel()">
+      <div class="mopt-ic"><i class="ti ti-trash"></i></div>
+      <div class="mopt-text"><div class="mopt-label">Eliminar documento</div></div>
+    </div>
+    <div style="height:4px"></div>
+  </div>
+</div>
+
+<!-- MODAL: SELECCIONAR CARPETA -->
+<div class="moverlay" id="m-fsel" onclick="if(event.target===this)closeFsel()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">Seleccionar carpeta</div>
+    <div id="fsel-options"></div>
+    <div style="height:4px"></div>
+  </div>
+</div>
+
+<!-- MODAL: RECORDATORIO -->
+<div class="moverlay" id="m-reminder" onclick="if(event.target===this)document.getElementById('m-reminder').classList.remove('open')">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">Agregar recordatorio</div>
+    <input type="hidden" id="rm-docid">
+    <div style="font-size:14px;font-weight:500;color:var(--t);background:var(--bgs);border-radius:var(--r2);padding:12px;margin-bottom:16px" id="rm-doc-name"></div>
+    <div class="fgroup"><label>Fecha y hora</label><input type="datetime-local" id="rm-datetime" class="finput"></div>
+    <div class="modal-actions">
+      <button class="btn btn-s" onclick="document.getElementById('m-reminder').classList.remove('open')">Cancelar</button>
+      <button class="btn btn-p" onclick="saveReminder()"><i class="ti ti-bell"></i>Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: CONFIGURAR NUBE -->
+<div class="moverlay" id="m-cloud-config" onclick="if(event.target===this)closeCloudConfig()">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="cc-title">Configurar</div>
+    <div id="cc-body"></div>
+    <div class="modal-actions" style="margin-top:4px">
+      <button class="btn btn-s" onclick="closeCloudConfig()">Cancelar</button>
+      <button class="btn btn-p" id="cc-save-btn">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL: TARJETA DE EMERGENCIA -->
+<div class="moverlay" id="m-emergency-card" onclick="if(event.target===this)document.getElementById('m-emergency-card').classList.remove('open')">
+  <div class="ec-card" id="ec-card-content">
+    <!-- generado por JS -->
+  </div>
+</div>
+
+<!-- VISOR FULLSCREEN -->
+<div class="moverlay" id="m-docview" onclick="if(event.target===this)closeDocView()">
+  <div class="docview-wrap">
+    <div class="docview-bar">
+      <span class="docview-name" id="dv-expand-name"></span>
+      <button class="ic" onclick="downloadCurrentDoc()" style="color:#fff"><i class="ti ti-download"></i></button>
+      <button class="ic" onclick="closeDocView()" style="color:#fff"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="docview-img-wrap" id="docview-scroll">
+      <img id="dv-expand-img" alt="Documento">
+    </div>
+    <div style="text-align:center;padding:8px;font-size:11px;color:rgba(255,255,255,.4)">Pellizca para hacer zoom · Arrastra para mover · Doble toque para ampliar</div>
+  </div>
+</div>
+
+<!-- SELECCIÓN MÚLTIPLE -->
+<div id="sel-bar" class="sel-bar">
+  <div class="sel-bar-info" id="sel-count">Mantén presionado para seleccionar</div>
+  <div class="sel-bar-acts">
+    <button class="sbtn sbtn-share" id="sbtn-share" onclick="shareSelected()" disabled><i class="ti ti-share"></i>Compartir</button>
+    <button class="sbtn sbtn-dl" id="sbtn-dl" onclick="downloadSelected()" disabled><i class="ti ti-download"></i>Descargar</button>
+    <button class="sbtn sbtn-cancel" onclick="exitSelMode()">Cancelar</button>
+  </div>
+</div>
+
+<div id="toast"></div>
+</div></div>
+
+<script>
+/* ============================================================
+   CONSTANTES
+   ============================================================ */
+const COLORS=[
+  {bg:'#E6F1FB',ic:'#185FA5',label:'Azul'},{bg:'#EAF3DE',ic:'#3B6D11',label:'Verde'},
+  {bg:'#FAEEDA',ic:'#854F0B',label:'Ámbar'},{bg:'#FCEBEB',ic:'#A32D2D',label:'Rojo'},
+  {bg:'#EEEDFE',ic:'#534AB7',label:'Morado'},{bg:'#E1F5EE',ic:'#0F6E56',label:'Teal'},
+  {bg:'#F1EFE8',ic:'#5F5E5A',label:'Gris'},
+];
+const FICONS=['ti-folder','ti-file-medical','ti-stethoscope','ti-heart','ti-brain','ti-pill','ti-scan','ti-flask','ti-cut','ti-ambulance','ti-eye','ti-lungs'];
+const DEF_FOLDERS=[
+  {id:'_cir',name:'Cirugía',icon:'ti-cut',colorIdx:3},{id:'_lab',name:'Laboratorio',icon:'ti-flask',colorIdx:1},
+  {id:'_con',name:'Consulta médica',icon:'ti-stethoscope',colorIdx:0},{id:'_med',name:'Medicamentos',icon:'ti-pill',colorIdx:6},
+  {id:'_img',name:'Imágenes diagnósticas',icon:'ti-scan',colorIdx:4},{id:'_urg',name:'Urgencias',icon:'ti-ambulance',colorIdx:2},
+];
+const SECQS={
+  mascota:'¿Cuál fue el nombre de tu primera mascota?',ciudad:'¿En qué ciudad naciste?',
+  madre:'¿Cuál es el nombre de tu madre?',colegio:'¿Cuál fue tu primer colegio?',comida:'¿Cuál es tu comida favorita?',
+};
+const BLOOD_TYPES=['O-','O+','A-','A+','B-','B+','AB-','AB+'];
+
+/* ============================================================
+   ESTADO
+   ============================================================ */
+const S={uid:null,folders:[],curFolder:null,curDoc:null,docOrigin:'folder',capturedImg:null,analysis:null,stream:null,fmCtx:null,selColor:0};
+const SEL={active:false,items:new Set(),view:null};
+let _lpTimer=null,_lpFired=false,_recUser=null;
+let _shareBusy=false,_downloadBusy=false;
+let _selBloodType='';
+let _donante=false;
+let _surgeries=[];
+let _ccService=null;
+
+/* ── Zoom state ── */
+const ZOOM={scale:1,x:0,y:0,minScale:1,maxScale:5,startDist:0,startScale:1,dragging:false,lastX:0,lastY:0,pointers:new Map()};
+
+/* ============================================================
+   DB
+   ============================================================ */
+const DB={
+  g:(k)=>{try{return JSON.parse(localStorage.getItem('mf_'+k))}catch{return null}},
+  s:(k,v)=>{try{localStorage.setItem('mf_'+k,JSON.stringify(v));return true}catch{return false}},
+  users:()=>DB.g('users')||[],saveUsers:(u)=>DB.s('users',u),
+  session:()=>sessionStorage.getItem('mf_uid'),
+  setSession:(id)=>sessionStorage.setItem('mf_uid',id),
+  clearSession:()=>sessionStorage.removeItem('mf_uid'),
+  folders:(uid)=>DB.g('folders_'+uid)||[],saveFolders:(uid,f)=>DB.s('folders_'+uid,f),
+  docs:(uid)=>DB.g('docs_'+uid)||[],saveDocs:(uid,d)=>DB.s('docs_'+uid,d),
+  img:(id)=>localStorage.getItem('mf_i_'+id),
+  saveImg:(id,b)=>{try{localStorage.setItem('mf_i_'+id,b);return true}catch{return false}},
+  delImg:(id)=>localStorage.removeItem('mf_i_'+id),
+  reminders:(uid)=>DB.g('reminders_'+uid)||[],
+  saveReminders:(uid,r)=>DB.s('reminders_'+uid,r),
+  medProfile:(uid)=>DB.g('medprofile_'+uid)||{tipoSangre:'',donante:false,alergias:'',condiciones:'',medicamentos:'',eps:'',doctor:'',doctorTel:'',cNombre:'',cRelacion:'',cTel:'',notas:'',cirugias:[]},
+  saveMedProfile:(uid,p)=>DB.s('medprofile_'+uid,p),
+  cloudConfig:(svc)=>DB.g('cloud_'+svc)||{},
+  saveCloudConfig:(svc,cfg)=>DB.s('cloud_'+svc,cfg),
+  lastBackup:(svc)=>DB.g('lastbackup_'+svc)||null,
+  saveLastBackup:(svc)=>DB.s('lastbackup_'+svc,new Date().toISOString()),
+};
+
+/* ============================================================
+   CRYPTO — doble hash para login robusto
+   ============================================================ */
+async function hashPwd(p){
+  try{const buf=await crypto.subtle.digest('SHA-256',new TextEncoder().encode(p+'mf2024'));return Array.from(new Uint8Array(buf)).map(b=>b.toString(16).padStart(2,'0')).join('');}
+  catch{return hashPwdSync(p);}
+}
+function hashPwdSync(p){let h=5381;for(let i=0;i<p.length;i++)h=Math.imul(33,h)^p.charCodeAt(i);return(h>>>0).toString(16)+'_'+p.length;}
+
+/* ============================================================
+   NAVEGACIÓN
+   ============================================================ */
+const MAIN_TABS=['home','recent','profile'];
+function go(id,dir='forward'){
+  document.querySelectorAll('.screen').forEach(s=>{
+    if(!s.classList.contains('active'))return;
+    s.classList.remove('active');
+    s.style.transform=dir==='back'?'translateX(20px)':'translateX(-20px)';
+    s.style.opacity='0';s.style.pointerEvents='none';
+    setTimeout(()=>{s.style.transform='';s.style.opacity='';s.style.pointerEvents='';},240);
+  });
+  const nx=document.getElementById('scr-'+id);if(!nx)return;
+  nx.style.transform=dir==='back'?'translateX(-20px)':'translateX(20px)';
+  nx.style.opacity='0';nx.style.pointerEvents='none';
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{nx.classList.add('active');nx.style.transform='';nx.style.opacity='';nx.style.pointerEvents='';}));
+  const showNav=MAIN_TABS.includes(id)&&!!S.uid;
+  document.getElementById('bnav').classList.toggle('hidden',!showNav);
+  if(showNav){document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));const nb=document.getElementById('n-'+id);if(nb)nb.classList.add('active');}
+  if(id==='home')renderHome();
+  if(id==='recent')renderRecent();
+  if(id==='profile')renderProfile();
+  if(id==='medprofile')prepMedProfile();
+  if(id==='backup')renderBackupScreen();
+}
+function switchTab(id){go(id);document.querySelectorAll('.ntab').forEach(t=>t.classList.remove('active'));const nb=document.getElementById('n-'+id);if(nb)nb.classList.add('active');}
+function exitSelModeAndBack(){exitSelMode(false);go('home','back');}
+
+/* ============================================================
+   AUTH — login con doble hash
+   ============================================================ */
+async function doLogin(){
+  const email=document.getElementById('l-email').value.trim().toLowerCase();
+  const pass=document.getElementById('l-pass').value;
+  const err=document.getElementById('l-err');err.classList.remove('show');
+  if(!email||!pass){setErr(err,'Completa todos los campos');return}
+  const users=DB.users();
+  let u=null;
+  try{const h=await hashPwd(pass);u=users.find(x=>x.email===email&&x.hash===h);}catch{}
+  if(!u){const bk=hashPwdSync(pass);u=users.find(x=>x.email===email&&x.hash===bk);}
+  if(!u){setErr(err,'Correo o contraseña incorrectos');return}
+  loginUser(u);
+}
+
+async function doRegister(){
+  const name=document.getElementById('r-name').value.trim();
+  const email=document.getElementById('r-email').value.trim().toLowerCase();
+  const phone=document.getElementById('r-phone').value.trim();
+  const pass=document.getElementById('r-pass').value;
+  const pass2=document.getElementById('r-pass2').value;
+  const secQ=document.getElementById('r-secq').value;
+  const secA=document.getElementById('r-seca').value.trim().toLowerCase();
+  const err=document.getElementById('r-err');err.classList.remove('show');
+  if(!name||!email||!pass){setErr(err,'Los campos * son obligatorios');return}
+  if(!email.includes('@')){setErr(err,'Correo inválido');return}
+  if(pass.length<6){setErr(err,'La contraseña debe tener al menos 6 caracteres');return}
+  if(pass!==pass2){setErr(err,'Las contraseñas no coinciden');return}
+  const users=DB.users();
+  if(users.find(u=>u.email===email)){setErr(err,'Este correo ya está registrado');return}
+  const h=await hashPwd(pass);
+  let secAHash='';if(secQ&&secA)secAHash=await hashPwd(secA);
+  const u={id:'u'+Date.now(),name,email,phone,dob:'',hash:h,apiKey:'',secQ,secAHash,biometricEnabled:false,biometricCredId:'',createdAt:new Date().toISOString()};
+  users.push(u);DB.saveUsers(users);
+  DB.saveFolders(u.id,DEF_FOLDERS.map(f=>({...f,id:f.id+'_'+u.id,createdAt:new Date().toISOString()})));
+  loginUser(u);
+}
+function loginUser(u){S.uid=u.id;S.folders=DB.folders(u.id);DB.setSession(u.id);go('home');}
+function logout(){stopCam();exitSelMode(false);S.uid=null;S.folders=[];DB.clearSession();go('login','back');}
+function getUser(){return DB.users().find(u=>u.id===S.uid)}
+function updateUser(upd){const users=DB.users();const i=users.findIndex(u=>u.id===S.uid);if(i<0)return;users[i]={...users[i],...upd};DB.saveUsers(users);}
+
+/* ============================================================
+   BIOMETRÍA
+   ============================================================ */
+function bufToB64(buf){return btoa(String.fromCharCode(...new Uint8Array(buf)));}
+function b64ToBuf(b64){try{return Uint8Array.from(atob(b64),c=>c.charCodeAt(0)).buffer;}catch{return new ArrayBuffer(0);}}
+
+async function checkBiometricAvailability(){
+  const btn=document.getElementById('bio-login-btn');if(!btn)return;
+  try{
+    if(!window.PublicKeyCredential){btn.style.display='none';return;}
+    const ok=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();
+    btn.style.display=(ok&&DB.users().some(u=>u.biometricEnabled&&u.biometricCredId))?'flex':'none';
+  }catch{btn.style.display='none';}
+}
+async function setupBiometric(){
+  const u=getUser();if(!u)return;
+  const isSecure=location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';
+  if(!isSecure){toast('⚠ La biometría requiere HTTPS. Despliega la app en un servidor seguro.');return;}
+  if(!window.PublicKeyCredential){toast('Tu navegador no soporta biometría');return;}
+  try{const ok=await PublicKeyCredential.isUserVerifyingPlatformAuthenticatorAvailable();if(!ok){toast('Sin sensor biométrico disponible');return;}}catch(e){toast('Error: '+e.message);return;}
+  try{
+    const cred=await navigator.credentials.create({publicKey:{
+      challenge:crypto.getRandomValues(new Uint8Array(32)),rp:{name:'MediFile'},
+      user:{id:crypto.getRandomValues(new Uint8Array(16)),name:u.email,displayName:u.name},
+      pubKeyCredParams:[{alg:-7,type:'public-key'},{alg:-257,type:'public-key'}],
+      authenticatorSelection:{authenticatorAttachment:'platform',userVerification:'required',residentKey:'preferred'},timeout:60000,
+    }});
+    updateUser({biometricEnabled:true,biometricCredId:bufToB64(cred.rawId)});
+    toast('✓ Biometría activada');renderProfile();checkBiometricAvailability();
+  }catch(e){if(e.name!=='AbortError')toast('No se pudo activar: '+e.message);}
+}
+async function biometricLogin(){
+  const bioUsers=DB.users().filter(u=>u.biometricEnabled&&u.biometricCredId);if(!bioUsers.length){toast('Sin cuentas con biometría');return;}
+  try{
+    const assertion=await navigator.credentials.get({publicKey:{challenge:crypto.getRandomValues(new Uint8Array(32)),allowCredentials:bioUsers.map(u=>({id:b64ToBuf(u.biometricCredId),type:'public-key'})),userVerification:'required',timeout:60000}});
+    const u=bioUsers.find(u=>u.biometricCredId===bufToB64(assertion.rawId))||bioUsers[0];
+    loginUser(u);
+  }catch(e){if(e.name!=='AbortError')toast('Biometría fallida. Usa tu contraseña.');}
+}
+function disableBiometric(){
+  confirm2('Desactivar biometría','¿Deseas desactivar el acceso biométrico?',()=>{
+    updateUser({biometricEnabled:false,biometricCredId:''});toast('Biometría desactivada');renderProfile();checkBiometricAvailability();
+  });
+}
+
+/* ============================================================
+   RECUPERAR CONTRASEÑA
+   ============================================================ */
+function prepRecovery(){
+  ['rec-step1'].map(id=>document.getElementById(id).classList.remove('hidden'));
+  document.getElementById('rec-step2').classList.add('hidden');
+  document.getElementById('rec-email').value='';
+  document.getElementById('rec-err1').classList.remove('show');_recUser=null;
+}
+async function recStep1(){
+  const email=document.getElementById('rec-email').value.trim().toLowerCase();
+  const err=document.getElementById('rec-err1');err.classList.remove('show');
+  if(!email){setErr(err,'Ingresa tu correo');return}
+  _recUser=DB.users().find(u=>u.email===email);
+  if(!_recUser){setErr(err,'No encontramos esa cuenta');return}
+  if(!_recUser.secQ||!_recUser.secAHash){setErr(err,'Sin pregunta de seguridad. Ve a Perfil → Editar para configurarla.');return;}
+  document.getElementById('rec-q-text').textContent=SECQS[_recUser.secQ]||_recUser.secQ;
+  ['rec-answer','rec-pass','rec-pass2'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('rec-err2').classList.remove('show');
+  document.getElementById('rec-step1').classList.add('hidden');
+  document.getElementById('rec-step2').classList.remove('hidden');
+}
+async function recStep2(){
+  const answer=document.getElementById('rec-answer').value.trim().toLowerCase();
+  const pass=document.getElementById('rec-pass').value;const pass2=document.getElementById('rec-pass2').value;
+  const err=document.getElementById('rec-err2');err.classList.remove('show');
+  if(!answer){setErr(err,'Escribe tu respuesta');return}
+  if(!pass||pass.length<6){setErr(err,'Mínimo 6 caracteres');return}
+  if(pass!==pass2){setErr(err,'Las contraseñas no coinciden');return}
+  const ansHash=await hashPwd(answer);const ansHashB=hashPwdSync(answer);
+  if(ansHash!==_recUser.secAHash&&ansHashB!==_recUser.secAHash){setErr(err,'Respuesta incorrecta');return}
+  const users=DB.users();const i=users.findIndex(u=>u.id===_recUser.id);
+  if(i>=0){users[i].hash=await hashPwd(pass);DB.saveUsers(users);}
+  toast('¡Contraseña actualizada!');_recUser=null;go('login','back');
+}
+function recReset(){_recUser=null;document.getElementById('rec-step1').classList.remove('hidden');document.getElementById('rec-step2').classList.add('hidden');document.getElementById('rec-err1').classList.remove('show');}
+
+/* ============================================================
+   PERFIL MÉDICO
+   ============================================================ */
+function prepMedProfile(){
+  if(!S.uid)return;
+  const mp=DB.medProfile(S.uid);
+  _selBloodType=mp.tipoSangre||'';_donante=!!mp.donante;
+  _surgeries=[...((mp.cirugias)||[])];
+  // Tipo de sangre UI
+  document.querySelectorAll('.btype-btn').forEach(b=>{b.classList.toggle('selected',b.dataset.bt===_selBloodType);});
+  // Toggle donante
+  document.getElementById('donante-toggle').classList.toggle('on',_donante);
+  // Cirugías
+  renderSurgeries();
+  // Rellenar campos
+  document.getElementById('med-alergias').value=mp.alergias||'';
+  document.getElementById('med-condiciones').value=mp.condiciones||'';
+  document.getElementById('med-medicamentos').value=mp.medicamentos||'';
+  document.getElementById('med-eps').value=mp.eps||'';
+  document.getElementById('med-doctor').value=mp.doctor||'';
+  document.getElementById('med-doctor-tel').value=mp.doctorTel||'';
+  document.getElementById('med-c-nombre').value=mp.cNombre||'';
+  document.getElementById('med-c-relacion').value=mp.cRelacion||'';
+  document.getElementById('med-c-tel').value=mp.cTel||'';
+  document.getElementById('med-notas').value=mp.notas||'';
+}
+function renderSurgeries(){
+  const el=document.getElementById('surgery-list');
+  if(!_surgeries.length){_surgeries=[''];}
+  el.innerHTML=_surgeries.map((s,i)=>`
+    <div class="surgery-item">
+      <input type="text" placeholder="Ej: Apendicectomía — 2018, Dr. Gómez" value="${escH(s)}" oninput="_surgeries[${i}]=this.value" maxlength="120">
+      <button onclick="removeSurgery(${i})" title="Eliminar"><i class="ti ti-trash"></i></button>
+    </div>`).join('');
+}
+function addSurgeryField(){_surgeries.push('');renderSurgeries();setTimeout(()=>{const items=document.querySelectorAll('.surgery-item input');if(items.length)items[items.length-1].focus();},100);}
+function removeSurgery(i){_surgeries.splice(i,1);if(!_surgeries.length)_surgeries=[''];renderSurgeries();}
+function selectBloodType(bt){
+  _selBloodType=bt;
+  document.querySelectorAll('.btype-btn').forEach(b=>{b.classList.toggle('selected',b.dataset.bt===bt);});
+}
+function toggleDonante(){
+  _donante=!_donante;
+  document.getElementById('donante-toggle').classList.toggle('on',_donante);
+}
+function saveMedProfile(){
+  // Sincronizar último valor de cada input de cirugía
+  document.querySelectorAll('#surgery-list input').forEach((inp,i)=>{if(i<_surgeries.length)_surgeries[i]=inp.value.trim();});
+  const cirugiasFiltradas=_surgeries.map(s=>typeof s==='string'?s.trim():'').filter(s=>s);
+  const mp={
+    tipoSangre:_selBloodType,donante:_donante,cirugias:cirugiasFiltradas,
+    alergias:document.getElementById('med-alergias').value.trim(),
+    condiciones:document.getElementById('med-condiciones').value.trim(),
+    medicamentos:document.getElementById('med-medicamentos').value.trim(),
+    eps:document.getElementById('med-eps').value.trim(),
+    doctor:document.getElementById('med-doctor').value.trim(),
+    doctorTel:document.getElementById('med-doctor-tel').value.trim(),
+    cNombre:document.getElementById('med-c-nombre').value.trim(),
+    cRelacion:document.getElementById('med-c-relacion').value.trim(),
+    cTel:document.getElementById('med-c-tel').value.trim(),
+    notas:document.getElementById('med-notas').value.trim(),
+  };
+  DB.saveMedProfile(S.uid,mp);toast('✓ Perfil médico guardado');
+}
+
+/* ── TARJETA DE EMERGENCIA ── */
+function showEmergencyCard(){
+  const u=getUser();if(!u)return;
+  const mp=DB.medProfile(S.uid);
+  const bt=mp.tipoSangre||'—';
+  const d=u.dob?calcAge(u.dob)+' años':'—';
+  const cirugiasList=(mp.cirugias||[]).filter(c=>c.trim());
+  const cirugiasHtml=cirugiasList.length>0
+    ?`<div class="ec-row"><i class="ti ti-cut ec-row-icon" style="color:#C62828"></i><div class="ec-row-content"><div class="ec-row-label">🏥 Cirugías previas</div><div class="ec-row-value">${cirugiasList.map(c=>escH(c)).join('<br>')}</div></div></div>`
+    :'';
+  const row=(icon,color,label,val)=>val?`<div class="ec-row"><i class="ti ${icon} ec-row-icon" style="color:${color}"></i><div class="ec-row-content"><div class="ec-row-label">${label}</div><div class="ec-row-value">${escH(val)}</div></div></div>`:'';
+  const rowE=(icon,color,label,val)=>`<div class="ec-row"><i class="ti ${icon} ec-row-icon" style="color:${color}"></i><div class="ec-row-content"><div class="ec-row-label">${label}</div><div class="ec-row-value${val?'':' empty'}">${val?escH(val):'No indicado'}</div></div></div>`;
+  document.getElementById('ec-card-content').innerHTML=`
+    <div class="ec-header">
+      <i class="ti ti-first-aid-kit ec-logo"></i>
+      <div class="ec-header-text">
+        <div class="ec-header-title">🏥 Tarjeta de emergencia</div>
+        <div class="ec-name">${escH(u.name)}${d!=='—'?` · ${d}`:''}</div>
+        ${mp.eps?`<div style="font-size:11px;color:rgba(255,255,255,.7);margin-top:2px">🏥 ${escH(mp.eps)}</div>`:''}
+      </div>
+      <div class="ec-blood">
+        <div class="ec-blood-type">${escH(bt)}</div>
+        <div class="ec-blood-label">Sangre</div>
+      </div>
+    </div>
+    <div class="ec-body">
+      ${rowE('ti-alert-triangle','#E65100','⚠ Alergias',mp.alergias)}
+      ${rowE('ti-pill','#1565C0','💊 Medicamentos permanentes',mp.medicamentos)}
+      ${cirugiasHtml}
+      ${row('ti-heart-rate-monitor','#B71C1C','🫀 Condiciones crónicas',mp.condiciones)}
+      ${row('ti-stethoscope','#1565C0','👨‍⚕️ Médico de cabecera',mp.doctor+(mp.doctorTel?' · '+mp.doctorTel:''))}
+      ${rowE('ti-phone-call','#1B5E20','📞 Contacto de emergencia',mp.cNombre+(mp.cRelacion?' ('+mp.cRelacion+')':'')+(mp.cTel?' · '+mp.cTel:''))}
+      ${row('ti-notes','#888','📝 Notas',mp.notas)}
+    </div>
+    <div class="ec-footer">
+      <div class="ec-footer-brand">MediFile · Desarrollado por Deivys Rubio</div>
+      <div class="ec-footer-date">${new Date().toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})}</div>
+    </div>
+    <div class="ec-actions">
+      <button class="btn btn-s ec-actions" style="flex:1;padding:12px;font-size:13px" onclick="shareEmergencyCard()"><i class="ti ti-share"></i>Compartir</button>
+      <button class="btn btn-s" style="flex:1;padding:12px;font-size:13px" onclick="document.getElementById('m-emergency-card').classList.remove('open')"><i class="ti ti-x"></i>Cerrar</button>
+    </div>`;
+  document.getElementById('m-emergency-card').classList.add('open');
+}
+function calcAge(dob){
+  const d=new Date(dob);const today=new Date();let age=today.getFullYear()-d.getFullYear();
+  if(today.getMonth()<d.getMonth()||(today.getMonth()===d.getMonth()&&today.getDate()<d.getDate()))age--;
+  return age;
+}
+async function shareEmergencyCard(){
+  const u=getUser();const mp=DB.medProfile(S.uid);
+  const cirugiasText=(mp.cirugias||[]).filter(c=>c.trim()).length?mp.cirugias.filter(c=>c.trim()).join('\n'):'Ninguna';
+  const text=`🏥 TARJETA DE EMERGENCIA — MediFile\n\n👤 Paciente: ${u.name}\n🩸 Tipo de sangre: ${mp.tipoSangre||'—'}\n⚠ Alergias: ${mp.alergias||'Ninguna conocida'}\n💊 Medicamentos: ${mp.medicamentos||'Ninguno'}\n🏥 Cirugías previas:\n${cirugiasText}\n🏥 EPS: ${mp.eps||'—'}\n👨‍⚕️ Médico: ${mp.doctor||'—'}\n📞 Emergencia: ${mp.cNombre||'—'} ${mp.cRelacion?'('+mp.cRelacion+')':''} ${mp.cTel||''}`;
+  if(navigator.share)try{await navigator.share({title:'Tarjeta de emergencia',text});return;}catch(e){if(e.name==='AbortError')return;}
+  await navigator.clipboard.writeText(text).then(()=>toast('Copiado al portapapeles')).catch(()=>toast('No se pudo copiar'));
+}
+
+/* ============================================================
+   COPIA DE SEGURIDAD
+   ============================================================ */
+function getBackupData(includeImages=true){
+  const docs=DB.docs(S.uid);
+  const data={
+    version:'1.5.0',app:'MediFile',exportedAt:new Date().toISOString(),uid:S.uid,
+    user:getUser(),folders:S.folders,docs,reminders:DB.reminders(S.uid),
+    medProfile:DB.medProfile(S.uid),images:{},
+  };
+  // Eliminar datos sensibles de biometría del backup
+  if(data.user){delete data.user.biometricCredId;data.user.biometricEnabled=false;}
+  if(includeImages){docs.forEach(d=>{const img=DB.img(d.id);if(img)data.images[d.id]=img;});}
+  return data;
+}
+function restoreBackupData(data){
+  if(!data||data.app!=='MediFile'){toast('Archivo de copia inválido');return false;}
+  try{
+    if(data.user){
+      const users=DB.users();const idx=users.findIndex(u=>u.id===data.uid||u.email===data.user.email);
+      if(idx>=0)users[idx]={...users[idx],...data.user,biometricEnabled:false,biometricCredId:''};
+      else users.push({...data.user,biometricEnabled:false,biometricCredId:''});
+      DB.saveUsers(users);
+    }
+    if(data.folders)DB.saveFolders(data.uid||S.uid,data.folders);
+    if(data.docs)DB.saveDocs(data.uid||S.uid,data.docs);
+    if(data.reminders)DB.saveReminders(data.uid||S.uid,data.reminders);
+    if(data.medProfile)DB.saveMedProfile(data.uid||S.uid,data.medProfile);
+    if(data.images)Object.entries(data.images).forEach(([id,img])=>DB.saveImg(id,img));
+    S.folders=DB.folders(S.uid);
+    return true;
+  }catch(e){console.error(e);return false;}
+}
+function exportBackup(includeImages=true){
+  const data=getBackupData(includeImages);
+  const json=JSON.stringify(data);
+  const blob=new Blob([json],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`medifile-backup-${new Date().toISOString().slice(0,10)}.json`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  DB.saveLastBackup('local');
+  toast('✓ Copia descargada correctamente');
+  renderBackupScreen();
+}
+function triggerImportBackup(){
+  const inp=document.createElement('input');inp.type='file';inp.accept='.json,application/json';
+  inp.onchange=e=>{
+    const file=e.target.files[0];if(!file)return;
+    confirm2('Restaurar copia','¿Seguro? Esto sobreescribirá todos tus documentos actuales con los de la copia.',()=>{
+      const reader=new FileReader();
+      reader.onload=ev=>{
+        try{
+          const data=JSON.parse(ev.target.result);
+          if(restoreBackupData(data)){
+            DB.saveLastBackup('local');
+            toast('✓ Datos restaurados correctamente');
+            go('home');renderBackupScreen();
+          }else toast('Error: archivo de copia inválido');
+        }catch{toast('Error al leer el archivo');}
+      };
+      reader.readAsText(file);
+    });
+  };
+  inp.click();
+}
+
+/* ── Firebase ── */
+async function backupToFirebase(){
+  const cfg=DB.cloudConfig('firebase');
+  if(!cfg.url||!cfg.secret){openCloudConfig('firebase');return;}
+  const data=getBackupData();
+  try{
+    const sov=showCloudSpin(true);
+    const r=await fetch(`${cfg.url.replace(/\/$/,'')}/medifile/${S.uid}.json?auth=${cfg.secret}`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});
+    showCloudSpin(false);
+    if(r.ok){DB.saveLastBackup('firebase');toast('✓ Copia guardada en Firebase');renderBackupScreen();}
+    else toast('Error Firebase: '+r.status);
+  }catch{showCloudSpin(false);toast('Error de conexión con Firebase');}
+}
+async function restoreFromFirebase(){
+  const cfg=DB.cloudConfig('firebase');if(!cfg.url||!cfg.secret){openCloudConfig('firebase');return;}
+  try{
+    const sov=showCloudSpin(true);
+    const r=await fetch(`${cfg.url.replace(/\/$/,'')}/medifile/${S.uid}.json?auth=${cfg.secret}`);
+    showCloudSpin(false);
+    const data=await r.json();
+    if(data&&data.app){confirm2('Restaurar desde Firebase','¿Sobreescribir con la copia de Firebase?',()=>{if(restoreBackupData(data)){DB.saveLastBackup('firebase');toast('✓ Restaurado desde Firebase');go('home');}});}
+    else toast('No se encontró copia en Firebase');
+  }catch{showCloudSpin(false);toast('Error al restaurar desde Firebase');}
+}
+
+/* ── Supabase ── */
+async function backupToSupabase(){
+  const cfg=DB.cloudConfig('supabase');if(!cfg.url||!cfg.key){openCloudConfig('supabase');return;}
+  const data=getBackupData();
+  try{
+    const sov=showCloudSpin(true);
+    const r=await fetch(`${cfg.url.replace(/\/$/,'')}/rest/v1/medifile_backups`,{
+      method:'POST',
+      headers:{'Content-Type':'application/json','apikey':cfg.key,'Authorization':'Bearer '+cfg.key,'Prefer':'resolution=merge-duplicates'},
+      body:JSON.stringify({uid:S.uid,data:JSON.stringify(data),updated_at:new Date().toISOString()}),
+    });
+    showCloudSpin(false);
+    if(r.ok||r.status===201||r.status===200){DB.saveLastBackup('supabase');toast('✓ Copia guardada en Supabase');renderBackupScreen();}
+    else toast('Error Supabase: '+r.status+' — ¿Tabla creada? Ver instrucciones');
+  }catch{showCloudSpin(false);toast('Error de conexión con Supabase');}
+}
+async function restoreFromSupabase(){
+  const cfg=DB.cloudConfig('supabase');if(!cfg.url||!cfg.key){openCloudConfig('supabase');return;}
+  try{
+    const sov=showCloudSpin(true);
+    const r=await fetch(`${cfg.url.replace(/\/$/,'')}/rest/v1/medifile_backups?uid=eq.${S.uid}&select=data&limit=1`,{
+      headers:{'apikey':cfg.key,'Authorization':'Bearer '+cfg.key},
+    });
+    showCloudSpin(false);
+    const rows=await r.json();
+    if(rows&&rows.length>0){
+      const data=JSON.parse(rows[0].data);
+      if(data&&data.app){confirm2('Restaurar desde Supabase','¿Sobreescribir con la copia de Supabase?',()=>{if(restoreBackupData(data)){DB.saveLastBackup('supabase');toast('✓ Restaurado desde Supabase');go('home');}});}
+    }else toast('No se encontró copia en Supabase');
+  }catch{showCloudSpin(false);toast('Error al restaurar desde Supabase');}
+}
+
+/* ── Google Drive (OAuth + REST) ── */
+async function backupToGDrive(){
+  const cfg=DB.cloudConfig('gdrive');if(!cfg.clientId){openCloudConfig('gdrive');return;}
+  try{
+    const token=await getGDriveToken(cfg.clientId);if(!token)return;
+    const sov=showCloudSpin(true);
+    const data=getBackupData();const json=JSON.stringify(data);
+    const meta=JSON.stringify({name:`medifile-backup-${S.uid}.json`,mimeType:'application/json'});
+    const form=new FormData();
+    form.append('metadata',new Blob([meta],{type:'application/json'}));
+    form.append('file',new Blob([json],{type:'application/json'}));
+    const r=await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart',{method:'POST',headers:{Authorization:'Bearer '+token},body:form});
+    showCloudSpin(false);
+    if(r.ok){DB.saveLastBackup('gdrive');toast('✓ Copia subida a Google Drive');renderBackupScreen();}
+    else if(r.status===401){sessionStorage.removeItem('mf_gdrive_token');toast('Sesión expirada — intenta de nuevo');}
+    else toast('Error Drive: '+r.status);
+  }catch(e){showCloudSpin(false);if(e.message!=='cancelled')toast('Error: '+e.message);}
+}
+async function getGDriveToken(clientId){
+  const cached=sessionStorage.getItem('mf_gdrive_token');if(cached)return cached;
+  return new Promise((resolve,reject)=>{
+    const redirect=location.href.split('#')[0].split('?')[0];
+    const url=`https://accounts.google.com/o/oauth2/v2/auth?client_id=${encodeURIComponent(clientId)}&redirect_uri=${encodeURIComponent(redirect)}&response_type=token&scope=${encodeURIComponent('https://www.googleapis.com/auth/drive.file')}`;
+    const popup=window.open(url,'_blank','width=520,height=620,toolbar=0,menubar=0,location=1');
+    if(!popup){toast('Permite las ventanas emergentes para autenticarte con Google');reject(new Error('blocked'));return;}
+    const check=setInterval(()=>{
+      try{
+        if(popup.location.hash&&popup.location.hash.includes('access_token')){
+          const token=new URLSearchParams(popup.location.hash.slice(1)).get('access_token');
+          if(token){clearInterval(check);popup.close();sessionStorage.setItem('mf_gdrive_token',token);resolve(token);}
+        }
+      }catch{}
+      if(popup.closed){clearInterval(check);resolve(null);}
+    },600);
+  });
+}
+
+/* ── Config Cloud Modal ── */
+const CLOUD_INFO={
+  firebase:{
+    title:'🔥 Configurar Firebase',
+    note:'Crea un proyecto en <a href="https://console.firebase.google.com" target="_blank" style="color:var(--p)">Firebase Console</a>, activa Realtime Database y obtén la URL y el secret en Configuración del proyecto → Cuentas de servicio.',
+    fields:[{id:'url',label:'URL de la base de datos',ph:'https://mi-proyecto-default-rtdb.firebaseio.com'},{id:'secret',label:'Secret / Token de autenticación',ph:'Tu secret de Firebase',type:'password'}],
+  },
+  supabase:{
+    title:'⚡ Configurar Supabase',
+    note:'En tu proyecto Supabase, crea una tabla llamada <code>medifile_backups</code> con columnas: <code>uid text PRIMARY KEY, data text, updated_at timestamptz</code>. Luego copia la URL y la clave anon.',
+    fields:[{id:'url',label:'URL del proyecto',ph:'https://xxxx.supabase.co'},{id:'key',label:'Clave anon (pública)',ph:'eyJh...',type:'password'}],
+  },
+  gdrive:{
+    title:'☁ Configurar Google Drive',
+    note:'Crea un proyecto en <a href="https://console.cloud.google.com" target="_blank" style="color:var(--p)">Google Cloud Console</a>, activa la API de Drive, crea credenciales OAuth 2.0 (aplicación web) y agrega el dominio de tu app como origen autorizado.',
+    fields:[{id:'clientId',label:'Client ID de OAuth 2.0',ph:'123456789-abc.apps.googleusercontent.com'}],
+  },
+};
+function openCloudConfig(svc){
+  _ccService=svc;const info=CLOUD_INFO[svc];if(!info)return;
+  const cfg=DB.cloudConfig(svc);
+  document.getElementById('cc-title').textContent=info.title;
+  document.getElementById('cc-body').innerHTML=`
+    <div style="font-size:12px;color:var(--ts);background:var(--bgs);border-radius:var(--r1);padding:10px 12px;margin-bottom:14px;line-height:1.7">${info.note}</div>
+    ${info.fields.map(f=>`<div class="fgroup"><label>${f.label}</label><input type="${f.type||'text'}" id="cc-${f.id}" class="finput" placeholder="${f.ph}" value="${escH(cfg[f.id]||'')}"></div>`).join('')}`;
+  document.getElementById('cc-save-btn').onclick=()=>saveCloudConfig(svc,info);
+  document.getElementById('m-cloud-config').classList.add('open');
+}
+function saveCloudConfig(svc,info){
+  const cfg={};info.fields.forEach(f=>{cfg[f.id]=(document.getElementById('cc-'+f.id)?.value||'').trim();});
+  DB.saveCloudConfig(svc,cfg);closeCloudConfig();toast('✓ Configuración guardada');renderBackupScreen();
+}
+function closeCloudConfig(){document.getElementById('m-cloud-config').classList.remove('open');}
+
+/* ── Render backup screen ── */
+function renderBackupScreen(){
+  if(!document.getElementById('scr-backup').classList.contains('active')&&!S.uid)return;
+  const lLocal=DB.lastBackup('local');const lFB=DB.lastBackup('firebase');const lSB=DB.lastBackup('supabase');const lGD=DB.lastBackup('gdrive');
+  const lastAll=[lLocal,lFB,lSB,lGD].filter(Boolean).sort().reverse()[0];
+  const cfgFB=DB.cloudConfig('firebase');const cfgSB=DB.cloudConfig('supabase');const cfgGD=DB.cloudConfig('gdrive');
+  const fmtDate=iso=>iso?new Date(iso).toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'})+' '+new Date(iso).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'}):'Nunca';
+  document.getElementById('backup-content').innerHTML=`
+    <!-- Estado general -->
+    <div class="backup-status">
+      <div class="bs-icon" style="background:${lastAll?'var(--okbg)':'var(--bgs)'}"><i class="ti ti-cloud-check" style="color:${lastAll?'var(--ok)':'var(--th)'}"></i></div>
+      <div class="bs-text"><div class="bs-label">${lastAll?'Última copia guardada':'Sin copias guardadas'}</div>
+        <div class="bs-val">${lastAll?fmtDate(lastAll):'Crea tu primera copia a continuación'}</div></div>
+    </div>
+
+    <!-- Local -->
+    <div class="backup-sec-title">💾 Respaldo local</div>
+    <div class="backup-card">
+      <div class="bc-header">
+        <div class="bc-icon" style="background:var(--bgs)"><i class="ti ti-file-download" style="color:var(--p)"></i></div>
+        <div>
+          <div class="bc-title">Archivo en este dispositivo</div>
+          <div class="bc-sub">Última copia: ${fmtDate(lLocal)}</div>
+        </div>
+        <div class="bc-status-dot ${lLocal?'ok':'none'}"></div>
+      </div>
+      <div class="bc-actions">
+        <button class="bc-btn bc-btn-p" onclick="exportBackup(true)"><i class="ti ti-download"></i>Descargar</button>
+        <button class="bc-btn bc-btn-s" onclick="exportBackup(false)"><i class="ti ti-file-text"></i>Sin imágenes</button>
+        <button class="bc-btn bc-btn-s" onclick="triggerImportBackup()"><i class="ti ti-upload"></i>Restaurar</button>
+      </div>
+    </div>
+
+    <!-- Google Drive -->
+    <div class="backup-sec-title">☁ Google Drive</div>
+    <div class="backup-card">
+      <div class="bc-header">
+        <div class="bc-icon" style="background:#e8f0fe"><i class="ti ti-brand-google-drive" style="color:#4285F4"></i></div>
+        <div>
+          <div class="bc-title">Google Drive</div>
+          <div class="bc-sub">${cfgGD.clientId?'Configurado · Última: '+fmtDate(lGD):'Sin configurar'}</div>
+        </div>
+        <div class="bc-status-dot ${cfgGD.clientId?(lGD?'ok':'warn'):'none'}"></div>
+      </div>
+      <div class="bc-actions">
+        <button class="bc-btn bc-btn-p" onclick="backupToGDrive()"><i class="ti ti-cloud-upload"></i>Subir</button>
+        <button class="bc-btn bc-btn-s" onclick="openCloudConfig('gdrive')"><i class="ti ti-settings"></i>Configurar</button>
+      </div>
+    </div>
+
+    <!-- Firebase -->
+    <div class="backup-sec-title">🔥 Firebase</div>
+    <div class="backup-card">
+      <div class="bc-header">
+        <div class="bc-icon" style="background:#fff3e0"><i class="ti ti-flame" style="color:#FF6D00"></i></div>
+        <div>
+          <div class="bc-title">Firebase Realtime Database</div>
+          <div class="bc-sub">${cfgFB.url?'Configurado · Última: '+fmtDate(lFB):'Sin configurar'}</div>
+        </div>
+        <div class="bc-status-dot ${cfgFB.url?(lFB?'ok':'warn'):'none'}"></div>
+      </div>
+      <div class="bc-actions">
+        <button class="bc-btn bc-btn-p" onclick="backupToFirebase()"><i class="ti ti-cloud-upload"></i>Subir</button>
+        <button class="bc-btn bc-btn-s" onclick="restoreFromFirebase()"><i class="ti ti-cloud-download"></i>Restaurar</button>
+        <button class="bc-btn bc-btn-s" onclick="openCloudConfig('firebase')"><i class="ti ti-settings"></i>Conf.</button>
+      </div>
+    </div>
+
+    <!-- Supabase -->
+    <div class="backup-sec-title">⚡ Supabase</div>
+    <div class="backup-card">
+      <div class="bc-header">
+        <div class="bc-icon" style="background:#e8f5e9"><i class="ti ti-database" style="color:#3ECF8E"></i></div>
+        <div>
+          <div class="bc-title">Supabase PostgreSQL</div>
+          <div class="bc-sub">${cfgSB.url?'Configurado · Última: '+fmtDate(lSB):'Sin configurar'}</div>
+        </div>
+        <div class="bc-status-dot ${cfgSB.url?(lSB?'ok':'warn'):'none'}"></div>
+      </div>
+      <div class="bc-actions">
+        <button class="bc-btn bc-btn-p" onclick="backupToSupabase()"><i class="ti ti-cloud-upload"></i>Subir</button>
+        <button class="bc-btn bc-btn-s" onclick="restoreFromSupabase()"><i class="ti ti-cloud-download"></i>Restaurar</button>
+        <button class="bc-btn bc-btn-s" onclick="openCloudConfig('supabase')"><i class="ti ti-settings"></i>Conf.</button>
+      </div>
+    </div>
+    <div style="height:32px"></div>`;
+}
+function showCloudSpin(show){
+  let sov=document.getElementById('cloud-sov');
+  if(!sov&&show){sov=document.createElement('div');sov.id='cloud-sov';sov.className='sov';sov.innerHTML='<div class="spin"></div><div class="spin-t">Conectando...</div>';document.getElementById('app').appendChild(sov);}
+  if(sov)sov.classList.toggle('on',show);
+}
+
+/* ============================================================
+   PERFIL (principal)
+   ============================================================ */
+function renderProfile(){
+  if(!S.uid)return;
+  const u=getUser();if(!u)return;
+  const initials=u.name.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase();
+  const docs=DB.docs(S.uid);const hasKey=!!u.apiKey,hasSecQ=!!u.secQ,hasBio=!!(u.biometricEnabled&&u.biometricCredId);
+  const mp=DB.medProfile(S.uid);const hasMed=!!(mp.tipoSangre||mp.alergias||mp.cNombre||(mp.cirugias||[]).length);
+  const reminders=DB.reminders(S.uid).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime));
+  const reminderHTML=reminders.length>0
+    ?reminders.map(r=>{const doc=docs.find(d=>d.id===r.docId);const dt=new Date(r.datetime);
+      return`<div class="reminder-item"><i class="ti ti-bell ri-ic"></i>
+        <div class="ri-text"><div class="ri-name">${escH(doc?.name||'Documento')}</div>
+        <div class="ri-date">${dt.toLocaleDateString('es-CO',{day:'numeric',month:'short',year:'numeric'})} · ${dt.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}</div></div>
+        <button class="ri-del" onclick="deleteReminder('${r.id}')"><i class="ti ti-trash"></i></button>
+      </div>`;}).join('')
+    :'<div style="font-size:13px;color:var(--th);padding:8px 0">Sin recordatorios pendientes</div>';
+
+  document.getElementById('ph-header').innerHTML=`<div class="av">${initials}</div><div class="pname">${escH(u.name)}</div><div class="pemail">${escH(u.email)}</div>${u.phone?`<div class="pemail">${escH(u.phone)}</div>`:''}`;
+  document.getElementById('slist').innerHTML=`
+    <div class="ssec"><div class="sttl">Mi cuenta</div>
+      <div class="sitem" onclick="goEditProfile()"><i class="ti ti-user-edit"></i>
+        <div class="sit-text"><div class="sit-label">Editar perfil</div><div class="sit-val">Nombre, teléfono, contraseña</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+    </div>
+
+    <div class="ssec"><div class="sttl">🏥 Mi salud</div>
+      <div class="sitem" onclick="go('medprofile')">
+        <i class="ti ti-heart-rate-monitor" style="color:${hasMed?'var(--err)':'var(--ts)'}"></i>
+        <div class="sit-text"><div class="sit-label">Perfil médico</div>
+          <div class="sit-val">${hasMed?`${mp.tipoSangre||'—'} · ${mp.alergias?'Alergias registradas':'Sin alergias'}`:'Sin información médica registrada'}</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+      <div class="sitem" onclick="showEmergencyCard()">
+        <i class="ti ti-id-badge" style="color:var(--err)"></i>
+        <div class="sit-text"><div class="sit-label">Tarjeta de emergencia</div>
+          <div class="sit-val">Ver y compartir información en caso de emergencia</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+    </div>
+
+    <div class="ssec"><div class="sttl">Seguridad</div>
+      <div class="sitem" onclick="goEditProfile()">
+        <i class="ti ti-shield" style="color:${hasSecQ?'var(--ok)':'var(--ts)'}"></i>
+        <div class="sit-text"><div class="sit-label">Pregunta de seguridad</div>
+          <div class="sit-val" style="color:${hasSecQ?'var(--ok)':'var(--ts)'}">
+            ${hasSecQ?`✓ ${SECQS[u.secQ]||u.secQ}`:'No configurada'}</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+      <div class="sitem" onclick="${hasBio?'disableBiometric()':'setupBiometric()'}">
+        <i class="ti ti-fingerprint" style="color:${hasBio?'var(--ok)':'var(--ts)'}"></i>
+        <div class="sit-text"><div class="sit-label">Acceso biométrico</div>
+          <div class="sit-val" style="color:${hasBio?'var(--ok)':'var(--ts)'}">
+            ${hasBio?'✓ Activado — toca para desactivar':'No activado (requiere HTTPS)'}</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+    </div>
+
+    <div class="ssec"><div class="sttl">Clasificación con IA</div>
+      <div class="sitem" onclick="go('api')">
+        <i class="ti ti-key" style="color:${hasKey?'var(--ok)':'var(--ts)'}"></i>
+        <div class="sit-text"><div class="sit-label">Clave API de Anthropic (Claude)</div>
+          <div class="sit-val" style="color:${hasKey?'var(--ok)':'var(--ts)'}">
+            ${hasKey?'✓ Activa — clasificación automática':'Sin configurar — modo básico'}</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+    </div>
+
+    <div class="ssec"><div class="sttl">☁ Datos y respaldo</div>
+      <div class="sitem" onclick="go('backup')">
+        <i class="ti ti-cloud-upload"></i>
+        <div class="sit-text"><div class="sit-label">Copia de seguridad</div>
+          <div class="sit-val">${getLastBackupText()}</div></div>
+        <i class="ti ti-chevron-right" style="color:var(--th)"></i></div>
+      <div class="sitem" style="cursor:default"><i class="ti ti-device-mobile"></i>
+        <div class="sit-text"><div class="sit-label">Almacenamiento local</div>
+          <div class="sit-val">${docs.length} doc${docs.length!==1?'s':''} · ${S.folders.length} carpeta${S.folders.length!==1?'s':''}</div></div>
+      </div>
+    </div>
+
+    <div class="ssec"><div class="sttl">Recordatorios</div>${reminderHTML}</div>
+
+    <div class="ssec"><div class="sttl">App</div>
+      <div class="sitem" style="cursor:default"><i class="ti ti-info-circle"></i>
+        <div class="sit-text"><div class="sit-label">MediFile v1.5.0</div>
+          <div class="sit-val">Desarrollado por Deivys Rubio</div></div>
+      </div>
+    </div>
+    <button class="btn btn-d" style="margin:4px 0 8px" onclick="confirmLogout()"><i class="ti ti-logout"></i>Cerrar sesión</button>
+    <div style="height:16px"></div>`;
+}
+function getLastBackupText(){
+  const dates=['local','firebase','supabase','gdrive'].map(s=>DB.lastBackup(s)).filter(Boolean).sort().reverse();
+  if(!dates.length)return'Sin copias guardadas';
+  const dt=new Date(dates[0]);return'Última: '+dt.toLocaleDateString('es-CO',{day:'numeric',month:'short'})+' '+dt.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'});
+}
+
+function goEditProfile(){
+  const u=getUser();if(!u)return;
+  document.getElementById('e-name').value=u.name;
+  document.getElementById('e-phone').value=u.phone||'';
+  document.getElementById('e-dob').value=u.dob||'';
+  document.getElementById('e-pass').value='';document.getElementById('e-pass2').value='';
+  document.getElementById('e-secq').value=u.secQ||'';document.getElementById('e-seca').value='';
+  document.getElementById('e-err').classList.remove('show');go('pedit');
+}
+async function saveProfile(){
+  const name=document.getElementById('e-name').value.trim();
+  const phone=document.getElementById('e-phone').value.trim();
+  const dob=document.getElementById('e-dob').value;
+  const pass=document.getElementById('e-pass').value;
+  const pass2=document.getElementById('e-pass2').value;
+  const secQ=document.getElementById('e-secq').value;
+  const secA=document.getElementById('e-seca').value.trim().toLowerCase();
+  const err=document.getElementById('e-err');err.classList.remove('show');
+  if(!name){setErr(err,'El nombre no puede estar vacío');return}
+  const upd={name,phone,dob,secQ};
+  if(pass){if(pass.length<6){setErr(err,'Mínimo 6 caracteres');return}if(pass!==pass2){setErr(err,'Las contraseñas no coinciden');return}upd.hash=await hashPwd(pass);}
+  if(secQ&&secA){upd.secAHash=await hashPwd(secA);}else if(!secQ){upd.secAHash='';}
+  updateUser(upd);toast('Perfil actualizado');go('profile','back');
+}
+function saveApiKey(){
+  const key=document.getElementById('api-k').value.trim();const err=document.getElementById('api-err');err.classList.remove('show');
+  if(!key){setErr(err,'Ingresa tu clave API');return}
+  if(!key.startsWith('sk-ant-')){setErr(err,'La clave debe comenzar con sk-ant-');return}
+  updateUser({apiKey:key});toast('Clave API guardada ✓');go('profile','back');
+}
+function clearApiKey(){confirm2('Eliminar clave API','¿Deseas eliminar tu clave API?',()=>{updateUser({apiKey:''});toast('Clave eliminada');go('profile','back');});}
+function confirmLogout(){confirm2('Cerrar sesión','¿Deseas cerrar tu sesión en este dispositivo?',logout);}
+function prepApiScreen(){
+  const u=getUser();const k=u?.apiKey||'';
+  document.getElementById('api-k').value=k;
+  document.getElementById('api-clear-btn').style.display=k?'flex':'none';
+  document.getElementById('api-err').classList.remove('show');
+}
+
+/* ============================================================
+   HOME
+   ============================================================ */
+function renderHome(){
+  if(!S.uid)return;S.folders=DB.folders(S.uid);
+  const u=getUser();const docs=DB.docs(S.uid);const h=new Date().getHours();
+  document.getElementById('h-greet').textContent=`${h<12?'Buenos días':h<18?'Buenas tardes':'Buenas noches'}, ${u?.name?.split(' ')[0]||''}`;
+  document.getElementById('h-date').textContent=new Date().toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long'});
+  const now=Date.now();
+  document.getElementById('st-docs').textContent=docs.length;document.getElementById('st-fold').textContent=S.folders.length;
+  document.getElementById('st-week').textContent=docs.filter(d=>(now-new Date(d.createdAt).getTime())<7*864e5).length;
+  const rems=DB.reminders(S.uid).filter(r=>new Date(r.datetime)>new Date()).sort((a,b)=>new Date(a.datetime)-new Date(b.datetime)).slice(0,3);
+  const remSec=document.getElementById('home-reminders-sec');
+  if(rems.length>0){
+    remSec.style.display='';
+    document.getElementById('home-reminders-list').innerHTML=rems.map(r=>{
+      const doc=docs.find(d=>d.id===r.docId);const dt=new Date(r.datetime);
+      return`<div class="reminder-item"><i class="ti ti-bell ri-ic"></i>
+        <div class="ri-text"><div class="ri-name">${escH(doc?.name||'Documento')}</div>
+        <div class="ri-date">${dt.toLocaleDateString('es-CO',{day:'numeric',month:'short'})} · ${dt.toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}</div></div>
+        <button class="ri-del" onclick="deleteReminder('${r.id}');renderHome()"><i class="ti ti-trash"></i></button>
+      </div>`;}).join('');
+  }else remSec.style.display='none';
+  const recent=[...docs].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).slice(0,10);
+  const rsec=document.getElementById('recent-sec');
+  if(recent.length===0){rsec.style.display='none';}
+  else{
+    rsec.style.display='';
+    document.getElementById('recent-cards').innerHTML=recent.map(d=>{
+      const img=DB.img(d.id);const f=S.folders.find(x=>x.id===d.folderId);const c=COLORS[f?.colorIdx||0];
+      return`<div class="rcard" onclick="openDoc('${d.id}','${d.folderId}','home')">
+        <div class="rcard-img">${img?`<img src="${img}" alt="">`:`<i class="ti ti-file"></i>`}</div>
+        <div class="rcard-body"><div class="rcard-name">${escH(d.name)}</div><div class="rcard-meta">${fdate(d.createdAt)}</div>
+        <span class="tag" style="background:${c.bg};color:${c.ic};margin-top:5px">${escH(f?.name||'—')}</span></div></div>`;
+    }).join('');
+  }
+  document.getElementById('fgrid').innerHTML=S.folders.map(f=>{
+    const c=COLORS[f.colorIdx||0];const cnt=docs.filter(d=>d.folderId===f.id).length;
+    return`<div class="fcrd" onclick="openFolder('${f.id}')">
+      <div class="ficon" style="background:${c.bg}"><i class="ti ${f.icon}" style="color:${c.ic}"></i></div>
+      <div class="fname">${escH(f.name)}</div><div class="fcnt">${cnt} documento${cnt!==1?'s':''}</div></div>`;
+  }).join('');
+}
+
+/* ============================================================
+   BÚSQUEDA
+   ============================================================ */
+function doSearch(){
+  document.getElementById('search-results').innerHTML=`<div style="padding:48px 24px;text-align:center;color:var(--th)"><i class="ti ti-search" style="font-size:48px;display:block;margin-bottom:12px;opacity:.4"></i><div style="font-size:14px">Escribe para buscar</div></div>`;
+  document.getElementById('search-input').value='';go('search');setTimeout(()=>document.getElementById('search-input').focus(),300);
+}
+function clearSearch(){document.getElementById('search-input').value='';document.getElementById('search-input').focus();liveSearch();}
+function liveSearch(){
+  const q=document.getElementById('search-input').value.toLowerCase().trim();
+  const el=document.getElementById('search-results');
+  if(!q){el.innerHTML=`<div style="padding:48px 24px;text-align:center;color:var(--th)"><i class="ti ti-search" style="font-size:48px;display:block;margin-bottom:12px;opacity:.4"></i><div style="font-size:14px">Escribe para buscar</div></div>`;return;}
+  const results=DB.docs(S.uid).filter(d=>d.name.toLowerCase().includes(q)||(d.type||'').toLowerCase().includes(q)||(d.text||'').toLowerCase().includes(q)).sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  if(!results.length){el.innerHTML=`<div class="empty"><i class="ti ti-search-off"></i><h3>Sin resultados</h3><p>No se encontraron documentos para "${escH(q)}"</p></div>`;return;}
+  let html=`<div class="search-count">${results.length} resultado${results.length!==1?'s':''} para "${escH(q)}"</div>`;
+  results.forEach(d=>{
+    const f=S.folders.find(x=>x.id===d.folderId);const c=COLORS[f?.colorIdx||0];const img=DB.img(d.id);
+    html+=`<div class="ditem" onclick="openDoc('${d.id}','${d.folderId}','search')">
+      <div class="dthumb">${img?`<img src="${img}" alt="">`:`<i class="ti ti-file"></i>`}</div>
+      <div class="dinfo"><div class="dname">${escH(d.name)}</div><div class="dfolder">${escH(f?.name||'—')}</div><div class="ddate">${fdate(d.createdAt)}</div></div>
+      <span class="tag" style="background:${c.bg};color:${c.ic}">${escH(f?.name||'—')}</span></div>`;
+  });
+  el.innerHTML=html;
+}
+
+/* ============================================================
+   RECIENTES
+   ============================================================ */
+function renderRecent(){
+  if(!S.uid)return;S.folders=DB.folders(S.uid);
+  const docs=[...DB.docs(S.uid)].sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt));
+  const el=document.getElementById('recent-list');
+  if(!docs.length){el.innerHTML=`<div class="empty"><i class="ti ti-file-off"></i><h3>Sin documentos aún</h3><p>Toma tu primera foto para empezar</p></div>`;return;}
+  const isSel=SEL.active&&SEL.view==='recent';let html='',lastDay='';
+  docs.forEach(d=>{
+    const day=new Date(d.createdAt).toLocaleDateString('es-CO',{weekday:'long',day:'numeric',month:'long',year:'numeric'});
+    if(day!==lastDay){html+=`<div class="day-sep">${day}</div>`;lastDay=day;}
+    const f=S.folders.find(x=>x.id===d.folderId);const c=COLORS[f?.colorIdx||0];const img=DB.img(d.id);const sel=SEL.items.has(d.id);
+    html+=`<div class="ditem${sel?' sel-on':''}" data-docid="${d.id}"
+      onclick="handleDitemClick('${d.id}','${d.folderId}','recent')"
+      ontouchstart="lpStart('${d.id}')" ontouchend="lpEnd()" ontouchcancel="lpEnd()" oncontextmenu="return false">
+      <div class="dcheck${isSel?' show':''}"><div class="dcheck-ring${sel?' on':''}">${sel?'<i class="ti ti-check"></i>':''}</div></div>
+      <div class="dthumb">${img?`<img src="${img}" alt="">`:`<i class="ti ti-file"></i>`}</div>
+      <div class="dinfo"><div class="dname">${escH(d.name)}</div><div class="dfolder">${escH(f?.name||'Sin carpeta')}</div><div class="ddate">${ftime(d.createdAt)}</div></div>
+      <span class="tag" style="background:${c.bg};color:${c.ic}">${escH(d.type||'Doc')}</span></div>`;
+  });
+  el.innerHTML=html;
+}
+
+/* ============================================================
+   CARPETAS
+   ============================================================ */
+function openFM(ctx){
+  S.fmCtx=ctx;S.selColor=0;
+  document.getElementById('nf-name').value='';document.getElementById('nf-err').classList.remove('show');
+  document.getElementById('cgrid').innerHTML=COLORS.map((c,i)=>`<div class="cdot ${i===0?'sel':''}" style="background:${c.bg};border-color:${i===0?c.ic:'transparent'}" onclick="pickColor(${i})" title="${c.label}"></div>`).join('');
+  document.getElementById('m-folder').classList.add('open');setTimeout(()=>document.getElementById('nf-name').focus(),300);
+}
+function closeFM(){document.getElementById('m-folder').classList.remove('open')}
+function pickColor(i){S.selColor=i;document.querySelectorAll('.cdot').forEach((d,j)=>{d.classList.toggle('sel',j===i);d.style.borderColor=j===i?COLORS[j].ic:'transparent';});}
+function createFolder(){
+  const name=document.getElementById('nf-name').value.trim();const err=document.getElementById('nf-err');
+  if(!name){setErr(err,'Escribe un nombre');return}
+  if(S.folders.find(f=>f.name.toLowerCase()===name.toLowerCase())){setErr(err,'Ya existe una carpeta con ese nombre');return}
+  const f={id:'f'+Date.now()+'_'+S.uid,name,icon:FICONS[Math.floor(Math.random()*FICONS.length)],colorIdx:S.selColor,createdAt:new Date().toISOString()};
+  S.folders.push(f);DB.saveFolders(S.uid,S.folders);closeFM();if(S.fmCtx==='cam')fillFsel(f.id);
+  toast(`Carpeta "${name}" creada`);renderHome();
+}
+function openFolder(id){
+  exitSelMode(false);S.curFolder=id;const f=S.folders.find(x=>x.id===id);if(!f)return;
+  const c=COLORS[f.colorIdx||0];const cnt=DB.docs(S.uid).filter(d=>d.folderId===id).length;
+  document.getElementById('fv-title').textContent=f.name;
+  document.getElementById('fv-hero').innerHTML=`
+    <div class="ficon" style="background:${c.bg};width:46px;height:46px"><i class="ti ${f.icon}" style="color:${c.ic};font-size:24px"></i></div>
+    <div><div style="font-size:16px;font-weight:600;color:var(--t)">${escH(f.name)}</div><div style="font-size:13px;color:var(--ts)">${cnt} documento${cnt!==1?'s':''}</div></div>`;
+  renderFolderDocs(id);go('folder');
+}
+function renderFolderDocs(fid){
+  if(!S.uid||!fid)return;
+  const docs=DB.docs(S.uid).filter(d=>d.folderId===fid);
+  const f=S.folders.find(x=>x.id===fid);const c=COLORS[f?.colorIdx||0];const el=document.getElementById('fv-list');
+  if(!docs.length){el.innerHTML=`<div class="empty"><i class="ti ti-file-off"></i><h3>Carpeta vacía</h3><p>Toca la cámara para agregar documentos</p></div>`;return;}
+  const isSel=SEL.active&&SEL.view==='folder';
+  el.innerHTML=docs.sort((a,b)=>new Date(b.createdAt)-new Date(a.createdAt)).map(d=>{
+    const img=DB.img(d.id);const sel=SEL.items.has(d.id);
+    return`<div class="ditem${sel?' sel-on':''}" data-docid="${d.id}"
+      onclick="handleDitemClick('${d.id}','${fid}','folder')"
+      ontouchstart="lpStart('${d.id}')" ontouchend="lpEnd()" ontouchcancel="lpEnd()" oncontextmenu="return false">
+      <div class="dcheck${isSel?' show':''}"><div class="dcheck-ring${sel?' on':''}">${sel?'<i class="ti ti-check"></i>':''}</div></div>
+      <div class="dthumb">${img?`<img src="${img}" alt="">`:`<i class="ti ti-file"></i>`}</div>
+      <div class="dinfo"><div class="dname">${escH(d.name)}</div><div class="ddate">${fdate(d.createdAt)} · ${ftime(d.createdAt)}</div>
+      <span class="tag" style="background:${c.bg};color:${c.ic};margin-top:4px">${escH(d.type||f?.name||'Doc')}</span></div>
+      ${!isSel?`<i class="ti ti-chevron-right" style="color:var(--th);font-size:15px"></i>`:''}
+    </div>`;
+  }).join('');
+}
+
+/* ============================================================
+   CÁMARA
+   ============================================================ */
+function goToCam(){fillFsel(S.curFolder);go('camera');startCam();}
+function fillFsel(presel){
+  const sel=document.getElementById('fsel');
+  sel.innerHTML=S.folders.map(f=>`<option value="${f.id}"${f.id===presel?' selected':''}>${escH(f.name)}</option>`).join('');
+  sel.insertAdjacentHTML('beforeend','<option value="__auto">🤖 Auto — IA elige la carpeta</option>');
+  if(!presel)sel.value='__auto';
+}
+async function startCam(){
+  document.getElementById('cam-ph').style.display='none';
+  try{
+    const st=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment',width:{ideal:1280}},audio:false});
+    S.stream=st;const v=document.getElementById('vid');v.srcObject=st;v.style.display='block';
+  }catch(e){
+    document.getElementById('cam-ph').style.display='flex';
+    if(e.name==='NotAllowedError')toast('Permiso de cámara denegado — usa la galería 📷');
+    else toast('Sin acceso a cámara — usa la galería 📷');
+  }
+}
+function stopCam(){
+  if(S.stream){S.stream.getTracks().forEach(t=>t.stop());S.stream=null;}
+  const v=document.getElementById('vid');if(v){v.srcObject=null;v.style.display='none';}
+  const ph=document.getElementById('cam-ph');if(ph)ph.style.display='flex';
+}
+function snap(){
+  const v=document.getElementById('vid');
+  if(!v.srcObject||!v.videoWidth){startCam();return;}
+  const c=document.getElementById('cv');const mw=1000,sc=Math.min(1,mw/v.videoWidth);
+  c.width=Math.round(v.videoWidth*sc);c.height=Math.round(v.videoHeight*sc);
+  c.getContext('2d').drawImage(v,0,0,c.width,c.height);processImg(c.toDataURL('image/jpeg',0.85));
+}
+function toJpeg(dataUrl,q=0.85){
+  return new Promise(resolve=>{
+    if(dataUrl.startsWith('data:image/jpeg')){resolve(dataUrl);return;}
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=1200,s=Math.min(1,MAX/Math.max(img.naturalWidth||800,img.naturalHeight||600));
+      const cv=document.getElementById('cv');
+      cv.width=Math.round((img.naturalWidth||800)*s);cv.height=Math.round((img.naturalHeight||600)*s);
+      cv.getContext('2d').drawImage(img,0,0,cv.width,cv.height);resolve(cv.toDataURL('image/jpeg',q));
+    };
+    img.onerror=()=>resolve(dataUrl);img.src=dataUrl;
+  });
+}
+function fileInput(e){const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=ev=>processImg(ev.target.result);r.readAsDataURL(f);e.target.value='';}
+async function processImg(rawDataUrl){
+  const fsel=document.getElementById('fsel').value;stopCam();
+  document.getElementById('a-img').src=rawDataUrl;
+  document.getElementById('a-type').textContent='—';document.getElementById('a-sub').textContent='Preparando imagen...';
+  document.getElementById('a-text').textContent='';document.getElementById('a-dname').value='';
+  go('analysis');const img=await toJpeg(rawDataUrl);S.capturedImg=img;
+  document.getElementById('a-img').src=img;runAnalysis(img,fsel);
+}
+
+/* ============================================================
+   IA
+   ============================================================ */
+async function runAnalysis(img,fhint){
+  const spin=document.getElementById('a-spin');spin.classList.add('on');
+  const u=getUser();const fn=S.folders.map(f=>f.name).join(', ');let res=null;
+  if(u?.apiKey){
+    try{
+      const b64=img.split(',')[1];
+      const prompt=`Eres un clasificador experto de documentos médicos colombianos. Analiza CUIDADOSAMENTE la imagen.\n\nIDENTIFICA el tipo leyendo títulos y contenido. Aplica la PRIMERA regla que coincida:\n1. FÓRMULA/RECETA MÉDICA → "Medicamentos"\n2. RESULTADO DE LABORATORIO → "Laboratorio"\n3. IMAGEN DIAGNÓSTICA → "Imágenes diagnósticas"\n4. URGENCIAS → "Urgencias"\n5. QUIRÚRGICO → "Cirugía"\n6. CONSULTA/EVOLUCIÓN → "Consulta médica"\n⚠ CRÍTICO: Fórmula con medicamentos = SIEMPRE "Medicamentos", NUNCA "Cirugía".\nCarpetas: ${fn}\nResponde SOLO JSON sin markdown:\n{"docType":"tipo","docSubtype":"descripción","suggestedFolder":"carpeta exacta","confidence":50-100,"extractedText":"texto máx 200 chars","docName":"nombre archivo"}`;
+      const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':u.apiKey,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:600,messages:[{role:'user',content:[{type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},{type:'text',text:prompt}]}]})});
+      const d=await r.json();
+      if(d.content){const txt=d.content.map(c=>c.text||'').join('');res=JSON.parse(txt.replace(/```json|```/g,'').trim());}
+    }catch(e){console.warn('API err',e);}
+  }
+  if(!res)res=kwClassify(fhint);
+  if(fhint&&fhint!=='__auto'){const hf=S.folders.find(f=>f.id===fhint);if(hf)res.suggestedFolder=hf.name;}
+  S.analysis={...res,image:img};renderResult(res);spin.classList.remove('on');
+}
+function kwClassify(fhint){
+  if(fhint&&fhint!=='__auto'){const f=S.folders.find(x=>x.id===fhint);if(f)return{docType:'Documento médico',docSubtype:'Carpeta seleccionada manualmente',suggestedFolder:f.name,confidence:80,extractedText:'',docName:'Documento '+new Date().toLocaleDateString('es-CO')};}
+  const cf=S.folders.find(f=>f.name==='Consulta médica')||S.folders[0];
+  return{docType:'Documento médico',docSubtype:'Sin clave API — ve a Perfil → Configurar IA',suggestedFolder:cf?.name||'',confidence:25,extractedText:'',docName:'Documento '+new Date().toLocaleDateString('es-CO')};
+}
+function renderResult(r){
+  document.getElementById('a-type').textContent=r.docType||'—';document.getElementById('a-sub').textContent=r.docSubtype||'—';
+  document.getElementById('a-text').textContent=r.extractedText||'No se detectó texto legible';
+  document.getElementById('a-dname').value=r.docName||'Documento '+new Date().toLocaleDateString('es-CO');
+  const f=S.folders.find(x=>x.name===r.suggestedFolder)||S.folders[0];
+  if(f){S.analysis.targetFolderId=f.id;const c=COLORS[f.colorIdx||0];document.getElementById('pi-ic').innerHTML=`<i class="ti ${f.icon}" style="color:${c.ic}"></i>`;document.getElementById('pi-ic').style.background=c.bg;document.getElementById('pi-name').textContent=f.name;}
+  const conf=Math.min(100,Math.max(0,r.confidence||40));document.getElementById('conf-v').textContent=conf+'%';
+  const fi=document.getElementById('conf-f');fi.style.width=conf+'%';fi.style.background=conf>=75?'#3B6D11':conf>=50?'#854F0B':'#A32D2D';
+}
+function changeFolderSug(){
+  if(!S.analysis)return;
+  document.getElementById('fsel-options').innerHTML=S.folders.map(f=>{
+    const c=COLORS[f.colorIdx||0];const isAct=S.analysis?.targetFolderId===f.id;
+    return`<div class="mopt${isAct?' mopt-active':''}" onclick="selectAnalysisFolder('${f.id}')"><div class="mopt-ic" style="background:${c.bg}"><i class="ti ${f.icon}" style="color:${c.ic}"></i></div><div class="mopt-text"><div class="mopt-label">${escH(f.name)}</div></div>${isAct?`<i class="ti ti-check" style="color:var(--p)"></i>`:''}</div>`;
+  }).join('');
+  document.getElementById('m-fsel').classList.add('open');
+}
+function closeFsel(){document.getElementById('m-fsel').classList.remove('open');}
+function selectAnalysisFolder(fid){
+  const f=S.folders.find(x=>x.id===fid);if(!f||!S.analysis)return;
+  S.analysis.targetFolderId=f.id;const c=COLORS[f.colorIdx||0];
+  document.getElementById('pi-ic').innerHTML=`<i class="ti ${f.icon}" style="color:${c.ic}"></i>`;
+  document.getElementById('pi-ic').style.background=c.bg;document.getElementById('pi-name').textContent=f.name;closeFsel();
+}
+
+function saveDoc(){
+  const a=S.analysis;if(!a)return;
+  const fid=a.targetFolderId||S.folders[0]?.id;if(!fid){toast('Selecciona una carpeta');return}
+  const name=document.getElementById('a-dname').value.trim()||a.docName||'Documento';
+  const id='d'+Date.now();
+  const doc={id,folderId:fid,name,type:a.docType||'Documento médico',createdAt:new Date().toISOString(),text:a.extractedText||''};
+  const docs=DB.docs(S.uid);docs.unshift(doc);DB.saveDocs(S.uid,docs);
+  if(!DB.saveImg(id,a.image))toast('⚠ Almacenamiento lleno — imagen no guardada');
+  S.analysis=null;S.capturedImg=null;
+  const f=S.folders.find(x=>x.id===fid);toast(`Guardado en "${f?.name}"`);S.curFolder=fid;openFolder(fid);
+}
+function discard(){S.analysis=null;S.capturedImg=null;go('home','back');}
+
+/* ============================================================
+   VISTA DE DOCUMENTO + ZOOM
+   ============================================================ */
+function openDoc(docId,folderId,origin='folder'){
+  S.curDoc={docId,folderId};S.docOrigin=origin;
+  const d=DB.docs(S.uid).find(x=>x.id===docId);if(!d)return;
+  const f=S.folders.find(x=>x.id===folderId);const img=DB.img(docId);
+  document.getElementById('dv-title').textContent=d.name;document.getElementById('dv-opts-title').textContent=d.name;
+  const dvi=document.getElementById('dv-img');if(img){dvi.src=img;dvi.style.display='block';}else dvi.style.display='none';
+  document.getElementById('dv-folder').textContent=f?.name||'Sin carpeta';
+  document.getElementById('dv-date').textContent=`${fdate(d.createdAt)} a las ${ftime(d.createdAt)}`;
+  document.getElementById('dv-type').textContent=d.type||'Documento médico';
+  document.getElementById('dv-text').textContent=d.text||'Sin texto extraído';go('doc');
+}
+function backFromDoc(){
+  const o=S.docOrigin;
+  if(o==='recent')go('recent','back');
+  else if(o==='home'||o==='search')go('home','back');
+  else{go('folder','back');renderFolderDocs(S.curDoc?.folderId);}
+}
+function confirmDel(){
+  confirm2('Eliminar documento','¿Seguro? Esta acción no se puede deshacer.',()=>{
+    const{docId}=S.curDoc;
+    DB.saveDocs(S.uid,DB.docs(S.uid).filter(d=>d.id!==docId));DB.delImg(docId);toast('Documento eliminado');backFromDoc();
+  });
+}
+function openDocOpts(){document.getElementById('m-docopts').classList.add('open');}
+function closeDocOpts(){document.getElementById('m-docopts').classList.remove('open');}
+
+/* Visor fullscreen con zoom/pan */
+function expandDoc(){
+  const{docId}=S.curDoc||{};if(!docId)return;
+  const d=DB.docs(S.uid).find(x=>x.id===docId);const img=DB.img(docId);if(!img)return;
+  const expImg=document.getElementById('dv-expand-img');
+  expImg.src=img;document.getElementById('dv-expand-name').textContent=d?.name||'Documento';
+  document.getElementById('m-docview').classList.add('open');resetZoom();setupZoomPan();
+}
+function closeDocView(){document.getElementById('m-docview').classList.remove('open');resetZoom();}
+function resetZoom(){ZOOM.scale=1;ZOOM.x=0;ZOOM.y=0;ZOOM.pointers.clear();ZOOM.dragging=false;applyZoomTransform();}
+function applyZoomTransform(){const img=document.getElementById('dv-expand-img');if(!img)return;img.style.transform=`translate(${ZOOM.x}px,${ZOOM.y}px) scale(${ZOOM.scale})`;img.style.cursor=ZOOM.scale>1?'grab':'zoom-in';}
+function clampPan(){
+  const wrap=document.getElementById('docview-scroll');const img=document.getElementById('dv-expand-img');if(!wrap||!img)return;
+  const maxX=Math.max(0,(img.offsetWidth*ZOOM.scale-wrap.offsetWidth)/2);
+  const maxY=Math.max(0,(img.offsetHeight*ZOOM.scale-wrap.offsetHeight)/2);
+  ZOOM.x=Math.min(maxX,Math.max(-maxX,ZOOM.x));ZOOM.y=Math.min(maxY,Math.max(-maxY,ZOOM.y));
+}
+function setupZoomPan(){
+  const wrap=document.getElementById('docview-scroll');if(!wrap||wrap._zoomBound)return;wrap._zoomBound=true;
+  function dist(pts){const arr=[...pts.values()];return Math.hypot(arr[0].x-arr[1].x,arr[0].y-arr[1].y);}
+  wrap.addEventListener('pointerdown',e=>{
+    wrap.setPointerCapture(e.pointerId);ZOOM.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(ZOOM.pointers.size===1){ZOOM.dragging=ZOOM.scale>1;ZOOM.lastX=e.clientX;ZOOM.lastY=e.clientY;}
+    else if(ZOOM.pointers.size===2){ZOOM.dragging=false;ZOOM.startDist=dist(ZOOM.pointers);ZOOM.startScale=ZOOM.scale;}
+  });
+  wrap.addEventListener('pointermove',e=>{
+    if(!ZOOM.pointers.has(e.pointerId))return;ZOOM.pointers.set(e.pointerId,{x:e.clientX,y:e.clientY});
+    if(ZOOM.pointers.size===2){const d=dist(ZOOM.pointers);ZOOM.scale=Math.min(ZOOM.maxScale,Math.max(ZOOM.minScale,ZOOM.startScale*(d/ZOOM.startDist)));if(ZOOM.scale<=1){ZOOM.x=0;ZOOM.y=0;}else clampPan();applyZoomTransform();}
+    else if(ZOOM.pointers.size===1&&ZOOM.dragging){ZOOM.x+=e.clientX-ZOOM.lastX;ZOOM.y+=e.clientY-ZOOM.lastY;ZOOM.lastX=e.clientX;ZOOM.lastY=e.clientY;clampPan();applyZoomTransform();}
+  });
+  function endPointer(e){ZOOM.pointers.delete(e.pointerId);if(ZOOM.pointers.size<2)ZOOM.startDist=0;if(!ZOOM.pointers.size)ZOOM.dragging=false;if(ZOOM.scale<=1){ZOOM.x=0;ZOOM.y=0;applyZoomTransform();}}
+  ['pointerup','pointercancel','pointerleave'].forEach(ev=>wrap.addEventListener(ev,endPointer));
+  let lastTap=0;
+  wrap.addEventListener('pointerup',e=>{if(ZOOM.pointers.size>0)return;const now=Date.now();if(now-lastTap<300){if(ZOOM.scale>1){ZOOM.scale=1;ZOOM.x=0;ZOOM.y=0;}else ZOOM.scale=2.2;applyZoomTransform();lastTap=0;}else lastTap=now;});
+  wrap.addEventListener('wheel',e=>{e.preventDefault();ZOOM.scale=Math.min(ZOOM.maxScale,Math.max(ZOOM.minScale,ZOOM.scale+(e.deltaY<0?0.15:-0.15)));if(ZOOM.scale<=1){ZOOM.x=0;ZOOM.y=0;}clampPan();applyZoomTransform();},{passive:false});
+}
+
+/* ============================================================
+   RECORDATORIOS
+   ============================================================ */
+function openReminderFromDoc(){const{docId}=S.curDoc||{};if(!docId)return;const d=DB.docs(S.uid).find(x=>x.id===docId);openReminderModal(docId,d?.name||'Documento');}
+function openReminderModal(docId,docName){
+  document.getElementById('rm-docid').value=docId;document.getElementById('rm-doc-name').textContent=docName;
+  const tomorrow=new Date();tomorrow.setDate(tomorrow.getDate()+1);tomorrow.setHours(9,0,0,0);
+  const pad=n=>String(n).padStart(2,'0');
+  document.getElementById('rm-datetime').value=`${tomorrow.getFullYear()}-${pad(tomorrow.getMonth()+1)}-${pad(tomorrow.getDate())}T09:00`;
+  document.getElementById('rm-datetime').min=new Date().toISOString().slice(0,16);
+  document.getElementById('m-reminder').classList.add('open');
+}
+function saveReminder(){
+  const docId=document.getElementById('rm-docid').value;const datetime=document.getElementById('rm-datetime').value;
+  if(!datetime){toast('Selecciona fecha y hora');return}
+  if(new Date(datetime)<=new Date()){toast('La fecha debe ser en el futuro');return}
+  const rems=DB.reminders(S.uid);rems.push({id:'r'+Date.now(),docId,datetime,createdAt:new Date().toISOString()});
+  DB.saveReminders(S.uid,rems);document.getElementById('m-reminder').classList.remove('open');
+  toast('✓ Recordatorio guardado');requestNotifPermission();
+}
+function deleteReminder(id){DB.saveReminders(S.uid,DB.reminders(S.uid).filter(r=>r.id!==id));renderProfile();}
+async function requestNotifPermission(){if(!('Notification' in window))return;if(Notification.permission==='default')await Notification.requestPermission();}
+function checkReminders(){
+  if(!S.uid)return;const now=new Date();const rems=DB.reminders(S.uid);
+  const due=rems.filter(r=>new Date(r.datetime)<=now);if(!due.length)return;
+  DB.saveReminders(S.uid,rems.filter(r=>!due.find(d=>d.id===r.id)));
+  due.forEach(r=>{
+    const doc=DB.docs(S.uid).find(d=>d.id===r.docId);const msg=`Recordatorio: ${doc?.name||'Documento médico'}`;
+    if(Notification.permission==='granted'){try{new Notification('MediFile',{body:msg,icon:'icons/icon-192.png'});}catch{}}
+    else setTimeout(()=>toast(msg),500);
+  });
+}
+
+/* ============================================================
+   MULTI SELECCIÓN
+   ============================================================ */
+function toggleSelMode(view){if(SEL.active&&SEL.view===view){exitSelMode();}else{enterSelMode(view);}}
+function enterSelMode(view){
+  SEL.active=true;SEL.view=view;SEL.items.clear();
+  if(view==='recent')document.getElementById('bnav').classList.add('hidden');
+  if(view==='folder'){document.getElementById('folder-add-btn').classList.add('hidden');document.getElementById('folder-cam-btn').classList.add('hidden');}
+  const btn=document.getElementById('sel-toggle-'+view);if(btn)btn.innerHTML='<i class="ti ti-x"></i>';
+  document.getElementById('sel-bar').classList.add('open');updateSelBar();
+  if(view==='folder')renderFolderDocs(S.curFolder);else if(view==='recent')renderRecent();
+}
+function exitSelMode(rerender=true){
+  if(!SEL.active)return;const view=SEL.view;SEL.active=false;SEL.view=null;SEL.items.clear();
+  if(view==='recent')document.getElementById('bnav').classList.remove('hidden');
+  if(view==='folder'){document.getElementById('folder-add-btn').classList.remove('hidden');document.getElementById('folder-cam-btn').classList.remove('hidden');}
+  const btn=document.getElementById('sel-toggle-'+view);if(btn)btn.innerHTML='<i class="ti ti-checkbox"></i>';
+  document.getElementById('sel-bar').classList.remove('open');
+  if(rerender){if(view==='folder')renderFolderDocs(S.curFolder);else if(view==='recent')renderRecent();}
+}
+function updateSelBar(){
+  const n=SEL.items.size;
+  document.getElementById('sel-count').textContent=n===0?'Mantén presionado o usa ☑ para seleccionar':`${n} seleccionado${n!==1?'s':''}`;
+  document.getElementById('sbtn-share').disabled=n===0;document.getElementById('sbtn-dl').disabled=n===0;
+}
+function toggleSelItem(docId){
+  SEL.items.has(docId)?SEL.items.delete(docId):SEL.items.add(docId);
+  const item=document.querySelector(`[data-docid="${docId}"]`);
+  if(item){const sel=SEL.items.has(docId);item.classList.toggle('sel-on',sel);const ring=item.querySelector('.dcheck-ring');if(ring){ring.classList.toggle('on',sel);ring.innerHTML=sel?'<i class="ti ti-check"></i>':'';};}
+  updateSelBar();
+}
+function handleDitemClick(docId,folderId,view){if(_lpFired){_lpFired=false;return;}if(SEL.active){toggleSelItem(docId);}else{openDoc(docId,folderId,view);}}
+function lpStart(docId){_lpFired=false;_lpTimer=setTimeout(()=>{_lpFired=true;if(navigator.vibrate)navigator.vibrate(30);const view=document.getElementById('scr-folder').classList.contains('active')?'folder':'recent';if(!SEL.active)enterSelMode(view);toggleSelItem(docId);},500);}
+function lpEnd(){clearTimeout(_lpTimer);}
+
+/* ============================================================
+   COMPARTIR Y DESCARGAR
+   ============================================================ */
+function b64toBlob(dataUrl){const[head,data]=dataUrl.split(',');const mime=head.match(/:(.*?);/)[1];const bin=atob(data);const arr=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);return new Blob([arr],{type:mime});}
+async function shareCurrentDoc(){const{docId}=S.curDoc||{};if(!docId)return;await shareItems([docId]);}
+async function downloadCurrentDoc(){const{docId}=S.curDoc||{};if(!docId)return;await downloadItems([docId]);}
+async function shareSelected(){if(!SEL.items.size){toast('Selecciona al menos un documento');return;}await shareItems([...SEL.items]);}
+async function downloadSelected(){if(!SEL.items.size){toast('Selecciona al menos un documento');return;}await downloadItems([...SEL.items]);}
+
+async function shareItems(ids){
+  if(_shareBusy)return;_shareBusy=true;
+  try{
+    const docs=DB.docs(S.uid);const files=[];
+    for(const id of ids){const doc=docs.find(d=>d.id===id);const imgData=DB.img(id);if(!imgData)continue;try{files.push(new File([b64toBlob(imgData)],sanitizeName(doc?.name||'documento')+'.jpg',{type:'image/jpeg'}));}catch{}}
+    if(!files.length){toast('Sin imágenes para compartir');return;}
+    if(!navigator.share){toast('Compartir no disponible — usa "Descargar"');return;}
+    if(typeof navigator.canShare==='function'&&navigator.canShare({files})){
+      try{await navigator.share({title:files.length===1?files[0].name.replace('.jpg',''):'Documentos MediFile',files});return;}
+      catch(e){if(e.name==='AbortError')return;toast('No se pudo abrir el compartidor');return;}
+    }
+    try{await navigator.share({title:'MediFile',text:'Documento médico'});}catch(e){if(e.name!=='AbortError')toast('No se pudo compartir');}
+  }finally{_shareBusy=false;}
+}
+
+async function downloadItems(ids){
+  if(_downloadBusy)return;_downloadBusy=true;
+  try{
+    const docs=DB.docs(S.uid);const isIOS=/iPad|iPhone|iPod/.test(navigator.userAgent)&&!window.MSStream;let count=0;
+    for(let i=0;i<ids.length;i++){
+      const doc=docs.find(d=>d.id===ids[i]);const imgData=DB.img(ids[i]);if(!imgData)continue;
+      if(isIOS&&ids.length===1){const w=window.open('','_blank');if(w){const n=escH(doc?.name||'Documento');w.document.write(`<!DOCTYPE html><html><head><meta name="viewport" content="width=device-width"><title>${n}</title></head><body style="margin:0;background:#111;display:flex;flex-direction:column;align-items:center;min-height:100vh"><img src="${imgData}" style="max-width:100%;height:auto"><p style="color:#aaa;font-family:-apple-system,sans-serif;font-size:13px;text-align:center;padding:16px">Mantén presionada la imagen → "Guardar imagen"</p></body></html>`);w.document.close();count++;}}
+      else{const a=document.createElement('a');a.href=imgData;a.download=sanitizeName(doc?.name||'documento_'+(i+1))+'.jpg';document.body.appendChild(a);a.click();document.body.removeChild(a);count++;}
+      if(i<ids.length-1)await new Promise(r=>setTimeout(r,380));
+    }
+    if(count>0){if(isIOS&&ids.length===1)toast('Mantén presionada la imagen para guardarla');else toast(count===1?'Imagen descargada':`${count} imágenes descargadas`);}
+    else toast('Sin imágenes disponibles');
+  }finally{setTimeout(()=>{_downloadBusy=false;},600);}
+}
+
+/* ============================================================
+   MODALES
+   ============================================================ */
+let _ccb=null;
+function confirm2(title,msg,cb){
+  document.getElementById('mc-title').textContent=title;document.getElementById('mc-msg').textContent=msg;_ccb=cb;
+  document.getElementById('mc-ok').onclick=()=>{closeConfirm();if(_ccb)_ccb();};
+  document.getElementById('m-confirm').classList.add('open');
+}
+function closeConfirm(){document.getElementById('m-confirm').classList.remove('open')}
+
+/* ============================================================
+   UTILIDADES
+   ============================================================ */
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='on';setTimeout(()=>t.className='',3200);}
+function setErr(el,msg){el.textContent=msg;el.classList.add('show')}
+function eyeToggle(id,btn){const inp=document.getElementById(id);const show=inp.type==='password';inp.type=show?'text':'password';btn.innerHTML=`<i class="ti ti-eye${show?'-off':''}"></i>`;}
+function fdate(iso){return new Date(iso).toLocaleDateString('es-CO',{day:'2-digit',month:'short',year:'numeric'})}
+function ftime(iso){return new Date(iso).toLocaleTimeString('es-CO',{hour:'2-digit',minute:'2-digit'})}
+function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+function sanitizeName(s){return String(s).replace(/[<>:"/\\|?*\x00-\x1f]/g,'').trim().slice(0,80)||'documento';}
+
+/* ============================================================
+   INIT
+   ============================================================ */
+function init(){
+  const uid=DB.session();
+  if(uid){const u=DB.users().find(x=>x.id===uid);if(u){S.uid=uid;S.folders=DB.folders(uid);go('home');setTimeout(checkReminders,1500);return;}}
+  checkBiometricAvailability();
+  setTimeout(()=>{document.getElementById('sd2').classList.add('on');setTimeout(()=>{document.getElementById('sd3').classList.add('on');setTimeout(()=>go('login'),700);},650);},900);
+}
+
+const _origGo=go;
+window.go=function(id,...args){
+  if(id==='api')prepApiScreen();
+  if(id==='recovery')prepRecovery();
+  if(SEL.active&&!['doc','folder','recent','home','search','medprofile','backup'].includes(id))exitSelMode(false);
+  _origGo(id,...args);
+};
+
+setInterval(()=>{if(S.uid)checkReminders();},60000);
+document.getElementById('scr-splash').classList.add('active');
+window.addEventListener('DOMContentLoaded',init);
+
+/* ============================================================
+   SERVICE WORKER + AVISO DE ACTUALIZACIÓN
+   ============================================================ */
+let _swWaiting = null;
+
+function showUpdateBanner(){
+  if(document.getElementById('update-banner'))return;
+  const b=document.createElement('div');
+  b.id='update-banner';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(var(--nav,62px)+12px);z-index:500;background:#0A0A0A;color:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px';
+  b.innerHTML='<i class="ti ti-refresh" style="font-size:18px;flex-shrink:0"></i><span style="flex:1">Hay una nueva versión de MediFile lista</span><button style="background:#1565C0;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer" id="update-banner-btn">Actualizar</button>';
+  document.body.appendChild(b);
+  document.getElementById('update-banner-btn').onclick=()=>{
+    if(_swWaiting)_swWaiting.postMessage('SKIP_WAITING');
+    b.remove();
+  };
+}
+
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.register('sw.js').then(reg=>{
+    if(reg.waiting){_swWaiting=reg.waiting;showUpdateBanner();}
+    reg.addEventListener('updatefound',()=>{
+      const newWorker=reg.installing;
+      if(!newWorker)return;
+      newWorker.addEventListener('statechange',()=>{
+        if(newWorker.state==='installed' && navigator.serviceWorker.controller){
+          _swWaiting=newWorker;
+          showUpdateBanner();
+        }
+      });
+    });
+  }).catch(()=>{});
+
+  let _reloaded=false;
+  navigator.serviceWorker.addEventListener('controllerchange',()=>{
+    if(_reloaded)return;
+    _reloaded=true;
+    window.location.reload();
+  });
+}
+
+
+</script>
+</body>
+</html>
