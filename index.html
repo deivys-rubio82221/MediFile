@@ -1586,7 +1586,7 @@ function renderProfile(){
     <div class="ssec"><div class="sttl">Recordatorios</div>${reminderHTML}</div>
 
     <div class="ssec"><div class="sttl">App</div>
-      ${_deferredInstall ? `
+      ${_deferredPrompt ? `
       <div class="sitem" onclick="promptInstall()">
         <i class="ti ti-download" style="color:var(--p)"></i>
         <div class="sit-text">
@@ -2099,71 +2099,12 @@ function escH(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').rep
 function sanitizeName(s){return String(s).replace(/[<>:"/\\|?*\x00-\x1f]/g,'').trim().slice(0,80)||'documento';}
 
 /* ============================================================
-   ✅ NUEVO: INSTALACIÓN PWA
-   ============================================================ */
-let _deferredInstall = null;
-
-window.addEventListener('beforeinstallprompt', e => {
-  e.preventDefault();
-  _deferredInstall = e;
-  // Mostrar banner 2 segundos después de que el usuario ya está usando la app
-  if (S.uid) setTimeout(showInstallBanner, 2000);
-  else {
-    // Si aún no inició sesión, esperar al login
-    const origLoginUser = loginUser;
-    window._pendingInstallBanner = true;
-  }
-});
-
-window.addEventListener('appinstalled', () => {
-  _deferredInstall = null;
-  document.getElementById('install-banner')?.remove();
-  toast('✓ MediFile instalada en tu dispositivo');
-});
-
-function showInstallBanner() {
-  if (!_deferredInstall || document.getElementById('install-banner')) return;
-  const b = document.createElement('div');
-  b.id = 'install-banner';
-  b.innerHTML = `
-    <i class="ti ti-download" style="font-size:20px;flex-shrink:0"></i>
-    <div style="flex:1">
-      <div style="font-weight:600;font-size:13px">Instalar MediFile</div>
-      <div style="font-size:11px;opacity:.8;margin-top:2px">Acceso rápido desde tu pantalla de inicio</div>
-    </div>
-    <button onclick="promptInstall()"
-      style="background:rgba(255,255,255,.25);color:#fff;border:none;
-             border-radius:8px;padding:7px 12px;font-size:12px;
-             font-weight:600;cursor:pointer;font-family:inherit;white-space:nowrap">
-      Instalar
-    </button>
-    <button onclick="document.getElementById('install-banner').remove()"
-      style="background:none;color:rgba(255,255,255,.7);border:none;
-             padding:4px 6px;cursor:pointer;font-size:20px;line-height:1;flex-shrink:0">×</button>`;
-  document.body.appendChild(b);
-  // Auto-ocultar después de 10 segundos
-  setTimeout(() => document.getElementById('install-banner')?.remove(), 10000);
-}
-
-async function promptInstall() {
-  document.getElementById('install-banner')?.remove();
-  if (!_deferredInstall) {
-    toast('En Chrome: menú ⋮ → "Agregar a pantalla de inicio"');
-    return;
-  }
-  _deferredInstall.prompt();
-  const { outcome } = await _deferredInstall.userChoice;
-  if (outcome === 'accepted') toast('✓ Instalando MediFile...');
-  _deferredInstall = null;
-}
-
-/* ============================================================
    INIT
    ============================================================ */
 function init(){
   const uid=DB.session();
-  if(uid){const u=DB.users().find(x=>x.id===uid);if(u){S.uid=uid;S.folders=DB.folders(uid);go('home');setTimeout(checkReminders,1500);// Mostrar banner de instalación si hay prompt pendiente
-    if(_deferredInstall)setTimeout(showInstallBanner,2500);return;}}
+  if(uid){const u=DB.users().find(x=>x.id===uid);if(u){S.uid=uid;S.folders=DB.folders(uid);go('home');setTimeout(checkReminders,1500);
+    if(_deferredPrompt)setTimeout(showInstallBanner,2500);return;}}
   checkBiometricAvailability();
   setTimeout(()=>{document.getElementById('sd2').classList.add('on');setTimeout(()=>{document.getElementById('sd3').classList.add('on');setTimeout(()=>go('login'),700);},650);},900);
 }
@@ -2174,24 +2115,68 @@ window.go=function(id,...args){
   if(id==='recovery')prepRecovery();
   if(SEL.active&&!['doc','folder','recent','home','search','medprofile','backup'].includes(id))exitSelMode(false);
   _origGo(id,...args);
-  // Mostrar banner de instalación al llegar al home por primera vez
-  if(id==='home'&&_deferredInstall&&S.uid)setTimeout(showInstallBanner,3000);
 };
 
 setInterval(()=>{if(S.uid)checkReminders();},60000);
 document.getElementById('scr-splash').classList.add('active');
 window.addEventListener('DOMContentLoaded',init);
 
-/* ============================================================
-   SERVICE WORKER + AVISO DE ACTUALIZACIÓN
-   ============================================================ */
-let _swWaiting = null;
+/* ── INSTALL PROMPT ── */
+let _deferredPrompt=null;
+
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  _deferredPrompt=e;
+  showInstallBanner();
+});
+
+window.addEventListener('appinstalled',()=>{
+  hideInstallBanner();
+  _deferredPrompt=null;
+  toast('✓ MediFile instalada correctamente');
+});
+
+function showInstallBanner(){
+  if(document.getElementById('install-banner'))return;
+  if(window.matchMedia('(display-mode: standalone)').matches)return;
+  const b=document.createElement('div');
+  b.id='install-banner';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(var(--nav,62px) + 12px + env(safe-area-inset-bottom,0px));z-index:500;background:var(--p);color:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(21,101,192,.45);font-size:13px;animation:sUp .3s ease';
+  b.innerHTML='<i class="ti ti-download" style="font-size:20px;flex-shrink:0"></i><div style="flex:1"><div style="font-weight:600;font-size:14px">Instalar MediFile</div><div style="font-size:12px;opacity:.85">Úsala sin internet, como app nativa</div></div><button id="install-banner-btn" style="background:#fff;color:var(--p);border:none;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;cursor:pointer;flex-shrink:0">Instalar</button><button id="install-banner-close" style="background:none;border:none;color:#fff;font-size:20px;cursor:pointer;flex-shrink:0;padding:0 4px;opacity:.7">✕</button>';
+  document.getElementById('app').appendChild(b);
+  document.getElementById('install-banner-btn').onclick=async()=>{
+    if(!_deferredPrompt)return;
+    _deferredPrompt.prompt();
+    const{outcome}=await _deferredPrompt.userChoice;
+    _deferredPrompt=null;
+    hideInstallBanner();
+    if(outcome==='accepted')toast('✓ Instalando MediFile...');
+  };
+  document.getElementById('install-banner-close').onclick=()=>hideInstallBanner();
+}
+
+function hideInstallBanner(){
+  const b=document.getElementById('install-banner');
+  if(b)b.remove();
+}
+
+async function promptInstall(){
+  if(!_deferredPrompt){toast('En Chrome: menú ⋮ → "Agregar a pantalla de inicio"');return;}
+  hideInstallBanner();
+  _deferredPrompt.prompt();
+  const{outcome}=await _deferredPrompt.userChoice;
+  _deferredPrompt=null;
+  if(outcome==='accepted')toast('✓ Instalando MediFile...');
+}
+
+/* ── SERVICE WORKER + AVISO DE ACTUALIZACIÓN ── */
+let _swWaiting=null;
 
 function showUpdateBanner(){
   if(document.getElementById('update-banner'))return;
   const b=document.createElement('div');
   b.id='update-banner';
-  b.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(var(--nav,62px)+12px);z-index:500;background:#0A0A0A;color:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px';
+  b.style.cssText='position:fixed;left:12px;right:12px;bottom:calc(var(--nav,62px)+76px + env(safe-area-inset-bottom,0px));z-index:500;background:#0A0A0A;color:#fff;border-radius:14px;padding:13px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 8px 24px rgba(0,0,0,.35);font-size:13px';
   b.innerHTML='<i class="ti ti-refresh" style="font-size:18px;flex-shrink:0"></i><span style="flex:1">Hay una nueva versión de MediFile lista</span><button style="background:#1565C0;color:#fff;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer" id="update-banner-btn">Actualizar</button>';
   document.body.appendChild(b);
   document.getElementById('update-banner-btn').onclick=()=>{
@@ -2201,13 +2186,13 @@ function showUpdateBanner(){
 }
 
 if('serviceWorker' in navigator){
-  navigator.serviceWorker.register('./sw.js').then(reg=>{
+  navigator.serviceWorker.register('sw.js').then(reg=>{
     if(reg.waiting){_swWaiting=reg.waiting;showUpdateBanner();}
     reg.addEventListener('updatefound',()=>{
       const newWorker=reg.installing;
       if(!newWorker)return;
       newWorker.addEventListener('statechange',()=>{
-        if(newWorker.state==='installed' && navigator.serviceWorker.controller){
+        if(newWorker.state==='installed'&&navigator.serviceWorker.controller){
           _swWaiting=newWorker;
           showUpdateBanner();
         }
