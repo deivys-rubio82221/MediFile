@@ -2,17 +2,17 @@
   "id": "/MediFile/",
   "name": "MediFile — Papelería Médica",
   "short_name": "MediFile",
-  "description": "Organiza, fotografía y clasifica automáticamente tu papelería médica usando inteligencia artificial. 100% privado: tus documentos nunca salen de tu dispositivo salvo que actives una copia de seguridad en la nube.",
+  "description": "Organiza, fotografía y clasifica automáticamente tu papelería médica usando inteligencia artificial. 100% privado: tus documentos nunca salen de tu dispositivo.",
   "start_url": "/MediFile/",
   "scope": "/MediFile/",
   "display": "standalone",
-  "display_override": ["window-controls-overlay", "standalone"],
   "orientation": "portrait-primary",
   "background_color": "#FFFFFF",
   "theme_color": "#1565C0",
   "lang": "es-CO",
   "dir": "ltr",
   "categories": ["health", "medical", "productivity", "lifestyle"],
+  "prefer_related_applications": false,
   "icons": [
     { "src": "icons/icon-72.png",  "sizes": "72x72",   "type": "image/png", "purpose": "any" },
     { "src": "icons/icon-96.png",  "sizes": "96x96",   "type": "image/png", "purpose": "any" },
@@ -29,26 +29,20 @@
     {
       "name": "Tomar foto a un documento",
       "short_name": "Capturar",
-      "description": "Abre directamente la cámara para fotografiar un nuevo documento médico",
       "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
       "name": "Buscar documentos",
       "short_name": "Buscar",
-      "description": "Busca en tus documentos guardados por nombre, tipo o texto",
       "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     },
     {
-      "name": "Perfil médico de emergencia",
+      "name": "Perfil médico",
       "short_name": "Emergencia",
-      "description": "Accede rápido a tu información médica vital",
       "url": "/MediFile/",
       "icons": [{ "src": "icons/icon-96.png", "sizes": "96x96", "type": "image/png" }]
     }
-  ],
-  "related_applications": [],
-  "prefer_related_applications": false,
-  "iarc_rating_id": ""
+  ]
 }
