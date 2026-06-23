@@ -1,28 +1,89 @@
 {
+  "id": "/MediFile/",
   "name": "MediFile — Papelería Médica",
   "short_name": "MediFile",
-  "description": "Organiza, fotografía y clasifica automáticamente tu papelería médica. 100% privado, sin servidores externos.",
+
+  "description": "Organiza, fotografía y clasifica automáticamente tu papelería médica usando inteligencia artificial. 100% privado: tus documentos nunca salen de tu dispositivo.",
+
   "start_url": "/MediFile/",
   "scope": "/MediFile/",
-  "id": "/MediFile/",
+
   "display": "standalone",
+
   "orientation": "portrait-primary",
+
   "background_color": "#FFFFFF",
   "theme_color": "#1565C0",
+
   "lang": "es-CO",
   "dir": "ltr",
-  "categories": ["health", "medical", "productivity"],
-  "prefer_related_applications": false,
-  "icons": [
-    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
-    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+
+  "categories": [
+    "health",
+    "medical",
+    "productivity",
+    "lifestyle"
   ],
+
+  "prefer_related_applications": false,
+
+  "icons": [
+    {
+      "src": "/MediFile/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/MediFile/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/MediFile/icons/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+
   "shortcuts": [
     {
-      "name": "Capturar documento",
+      "name": "Tomar foto a un documento",
       "short_name": "Capturar",
       "url": "/MediFile/",
-      "icons": [{ "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" }]
+      "icons": [
+        {
+          "src": "/MediFile/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Buscar documentos",
+      "short_name": "Buscar",
+      "url": "/MediFile/",
+      "icons": [
+        {
+          "src": "/MediFile/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "Perfil médico",
+      "short_name": "Emergencia",
+      "url": "/MediFile/",
+      "icons": [
+        {
+          "src": "/MediFile/icons/icon-192.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
     }
   ]
 }
