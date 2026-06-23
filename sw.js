@@ -1,9 +1,9 @@
 /* ============================================================
-   MediFile — Service Worker v1.1.1
-   Corregido para GitHub Pages: rutas con /MediFile/
+   MediFile — Service Worker v1.2.0
+   Limpieza forzada de caché viejo para corregir install prompt
    ============================================================ */
 
-const SW_VERSION = '1.1.1';
+const SW_VERSION = '1.2.0';
 const CACHE_NAME = 'medifile-v' + SW_VERSION;
 
 const PRECACHE_URLS = [
@@ -15,6 +15,9 @@ const PRECACHE_URLS = [
 ];
 
 self.addEventListener('install', event => {
+  // skipWaiting para que este SW tome control de inmediato
+  // y elimine cualquier SW viejo que pueda estar bloqueando el install prompt
+  self.skipWaiting();
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache =>
       Promise.allSettled(
@@ -31,7 +34,10 @@ self.addEventListener('activate', event => {
     caches.keys()
       .then(keys =>
         Promise.all(
-          keys.filter(key => key !== CACHE_NAME).map(key => caches.delete(key))
+          keys.filter(key => key !== CACHE_NAME).map(key => {
+            console.log('Eliminando caché viejo:', key);
+            return caches.delete(key);
+          })
         )
       )
       .then(() => self.clients.claim())
@@ -41,13 +47,16 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const url = new URL(event.request.url);
 
+  // API de Anthropic → siempre red
   if (url.hostname === 'api.anthropic.com') {
     event.respondWith(fetch(event.request));
     return;
   }
 
+  // Solo GET
   if (event.request.method !== 'GET') return;
 
+  // Navegación → network first, fallback a caché
   if (event.request.mode === 'navigate') {
     event.respondWith(
       fetch(event.request)
@@ -61,6 +70,7 @@ self.addEventListener('fetch', event => {
     return;
   }
 
+  // Resto → cache first, fallback network
   event.respondWith(
     caches.match(event.request).then(cached => {
       if (cached) return cached;
@@ -74,7 +84,7 @@ self.addEventListener('fetch', event => {
         }
         return response;
       });
-    }).catch(() => new Response('Recurso no disponible sin conexión', { status: 503 }))
+    }).catch(() => new Response('Sin conexión', { status: 503 }))
   );
 });
 
