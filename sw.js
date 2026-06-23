@@ -3,7 +3,7 @@
    Limpieza forzada de caché viejo para corregir install prompt
    ============================================================ */
 
-const SW_VERSION = '1.2.0';
+const SW_VERSION = '1.3.0';
 const CACHE_NAME = 'medifile-v' + SW_VERSION;
 
 const PRECACHE_URLS = [
